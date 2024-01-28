@@ -9,6 +9,13 @@ pillow = "*"
 pytest-django = "*"
 django-extensions = "*"
 model-bakery = "*"
+djangorestframework = "*"
+django-filter = "*"
+django-cors-headers = "*"
+python-decouple = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
+dj-rest-auth = "*"
 
 [dev-packages]
 black = "*"
@@ -16,6 +23,7 @@ install = "*"
 factory-boy = "*"
 model-bakery = "*"
 pytest-cov = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.12"
