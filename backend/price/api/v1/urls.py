@@ -6,7 +6,7 @@ from price.api.v1.views import (
 )
 
 router = routers.DefaultRouter()
-router.register("v1/prices", PriceViewSetV1)
-router.register("v1/price-items", PriceItemViewSetV1)
+router.register(r"prices", PriceViewSetV1)
+router.register(r"price-items", PriceItemViewSetV1)
 
 urlpatterns = router.urls
