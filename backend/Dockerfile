@@ -3,7 +3,7 @@ LABEL authors="William Galleti <william.galleti@gmail.com>"
 
 RUN \
   apk update && \
-  apk add postgresql-dev gcc python3-dev musl-dev zlib-dev jpeg-dev
+  apk add postgresql-dev gcc python3-dev musl-dev zlib-dev jpeg-dev gettext build-base libffi-dev
 
 WORKDIR /api
 
