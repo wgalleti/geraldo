@@ -4,11 +4,6 @@ from django.db import models
 
 
 class BaseModelMixin(models.Model):
-    company = models.ForeignKey(
-        "base.Company",
-        on_delete=models.DO_NOTHING,
-        related_name="+",
-    )
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
@@ -26,6 +21,17 @@ class UUIDIDMixin(BaseModelMixin):
         default=uuid.uuid4,
         editable=False,
         unique=True,
+    )
+
+    class Meta:
+        abstract = True
+
+
+class BaseModelCompanyMixin(BaseModelMixin):
+    company = models.ForeignKey(
+        "base.Company",
+        on_delete=models.DO_NOTHING,
+        related_name="+",
     )
 
     class Meta:

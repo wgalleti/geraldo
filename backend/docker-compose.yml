@@ -18,7 +18,9 @@ services:
           - db
     restart: unless-stopped
   api:
-    build: ./
+    build:
+      context: ./
+      dockerfile: Dockerfile
     command: >
       /bin/sh -c "
       python manage.py migrate &&

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from base.mixins import BaseModelMixin, UUIDIDMixin
+from base.mixins import BaseModelMixin, UUIDIDMixin, BaseModelCompanyMixin
 from common.models import Priority
 
 
@@ -38,7 +38,7 @@ class PriceBuyerDataMixin(models.Model):
         abstract = True
 
 
-class Price(UUIDIDMixin, PriceBuyerDataMixin):
+class Price(UUIDIDMixin, BaseModelCompanyMixin, PriceBuyerDataMixin):
     status = models.CharField(
         max_length=255,
         choices=PriceStatus,
@@ -87,7 +87,7 @@ class PriceItemBuyerDataMixin(models.Model):
         abstract = True
 
 
-class PriceItem(UUIDIDMixin, PriceItemBuyerDataMixin):
+class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
     price = models.ForeignKey(
         "price.Price",
         on_delete=models.CASCADE,

@@ -6,9 +6,16 @@ name = "pypi"
 [packages]
 django = "*"
 pillow = "*"
+pytest-django = "*"
+django-extensions = "*"
+model-bakery = "*"
 
 [dev-packages]
 black = "*"
+install = "*"
+factory-boy = "*"
+model-bakery = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.12"

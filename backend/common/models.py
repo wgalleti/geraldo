@@ -2,10 +2,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from base.mixins import BaseModelMixin, UUIDIDMixin
+from base.mixins import BaseModelCompanyMixin, UUIDIDMixin
 
 
-class Payment(BaseModelMixin):
+class Payment(BaseModelCompanyMixin):
     erp_code = models.CharField(
         max_length=255,
         unique=True,
@@ -18,7 +18,7 @@ class Payment(BaseModelMixin):
         return f"{self.erp_code}-{self.name}"
 
 
-class Unity(BaseModelMixin):
+class Unity(BaseModelCompanyMixin):
     erp_code = models.CharField(
         max_length=255,
         unique=True,
@@ -31,7 +31,7 @@ class Unity(BaseModelMixin):
         return f"{self.erp_code}-{self.name}"
 
 
-class ProductGroup(BaseModelMixin):
+class ProductGroup(BaseModelCompanyMixin):
     erp_code = models.CharField(
         max_length=255,
         unique=True,
@@ -50,7 +50,7 @@ class Priority(models.TextChoices):
     NO_WAITING = "no_waiting", _("No waiting")
 
 
-class Product(BaseModelMixin):
+class Product(BaseModelCompanyMixin):
     erp_code = models.CharField(
         max_length=255,
         unique=True,
@@ -64,7 +64,8 @@ class Product(BaseModelMixin):
     bar_code = models.CharField(
         max_length=255,
     )
-    priority = models.IntegerField(
+    priority = models.CharField(
+        max_length=255,
         choices=Priority,
         default=Priority.NORMAL,
     )
@@ -73,7 +74,7 @@ class Product(BaseModelMixin):
         return f"{self.erp_code}-{self.name}"
 
 
-class Buyer(UUIDIDMixin):
+class Buyer(UUIDIDMixin, BaseModelCompanyMixin):
     erp_code = models.CharField(
         max_length=255,
         unique=True,
@@ -92,7 +93,7 @@ class Buyer(UUIDIDMixin):
         return f"{self.erp_code}-{self.name}"
 
 
-class Supplier(UUIDIDMixin):
+class Supplier(UUIDIDMixin, BaseModelCompanyMixin):
     erp_code = models.CharField(
         max_length=255,
         unique=True,
@@ -120,3 +121,7 @@ class Supplier(UUIDIDMixin):
 
     def __str__(self):
         return f"{self.erp_code}-{self.name}"
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)

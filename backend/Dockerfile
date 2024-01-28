@@ -15,6 +15,6 @@ COPY Pipfile Pipfile.lock ./
 
 RUN pip install -U pipenv
 
-RUN pipenv install --system --deploy --ignore-pipfile
+RUN pipenv install -d --system --deploy --ignore-pipfile
 
 COPY . .
