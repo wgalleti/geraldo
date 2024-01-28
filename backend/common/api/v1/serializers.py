@@ -1,5 +1,4 @@
-from rest_framework import serializers
-
+from base.api.v1.serializers import BaseNotERPSerializerV1, BaseCompanySerializerV1
 from common.models import (
     Payment,
     Unity,
@@ -9,31 +8,31 @@ from common.models import (
 )
 
 
-class PaymentSerializerV1(serializers.ModelSerializer):
+class PaymentSerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
     class Meta:
         model = Payment
         fields = "__all__"
 
 
-class UnitySerializerV1(serializers.ModelSerializer):
+class UnitySerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
     class Meta:
         model = Unity
         fields = "__all__"
 
 
-class ProductSerializerV1(serializers.ModelSerializer):
+class ProductSerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
     class Meta:
         model = Product
         fields = "__all__"
 
 
-class BuyerSerializerV1(serializers.ModelSerializer):
+class BuyerSerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
     class Meta:
         model = Buyer
         fields = "__all__"
 
 
-class SupplierSerializerV1(serializers.ModelSerializer):
+class SupplierSerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
     class Meta:
         model = Supplier
         fields = "__all__"

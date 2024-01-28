@@ -133,7 +133,7 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.OrderingFilter",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
@@ -165,8 +165,8 @@ JWT_AUTH = {
 }
 
 REST_AUTH_SERIALIZERS = {
-    "TOKEN_SERIALIZER": "core.serializers.TokenSerializer",
-    "USER_DETAILS_SERIALIZER": "core.serializers.UserSerializer",
+    "TOKEN_SERIALIZER": "base.api.v1.serializers.TokenSerializer",
+    "USER_DETAILS_SERIALIZER": "base.api.v1.serializers.UserSerializer",
 }
 
 REST_USE_JWT = False

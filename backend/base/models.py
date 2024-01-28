@@ -50,7 +50,7 @@ class User(AbstractUser):
 
 class Profile(UUIDIDMixin):
     company = models.ForeignKey(
-        Company,
+        "base.Company",
         on_delete=models.DO_NOTHING,
         verbose_name=_("Company"),
     )
