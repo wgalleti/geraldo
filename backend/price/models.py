@@ -17,21 +17,29 @@ class PriceBuyerDataMixin(models.Model):
         "common.Payment",
         on_delete=models.DO_NOTHING,
         related_name="payment_refers",
+        verbose_name=_("Payment refer"),
     )
     buyer = models.ForeignKey(
         "common.Buyer",
         on_delete=models.DO_NOTHING,
+        verbose_name=_("Buyer"),
     )
-    started_at = models.DateField()
-    expire_at = models.DateField()
+    started_at = models.DateField(
+        verbose_name=_("Started at"),
+    )
+    expire_at = models.DateField(
+        verbose_name=_("Expire at"),
+    )
     recommendation = models.TextField(
         null=True,
         blank=True,
+        verbose_name=_("Recommendation"),
     )
     priority = models.CharField(
         max_length=255,
         choices=Priority,
         default=Priority.NORMAL,
+        verbose_name=_("Priority"),
     )
 
     class Meta:
@@ -43,10 +51,12 @@ class Price(UUIDIDMixin, BaseModelCompanyMixin, PriceBuyerDataMixin):
         max_length=255,
         choices=PriceStatus,
         default=PriceStatus.WAITING,
+        verbose_name=_("Status"),
     )
     erp_code = models.CharField(
         max_length=255,
         unique=True,
+        verbose_name=_("ERP code"),
     )
     payment = models.ForeignKey(
         "common.Payment",
@@ -54,33 +64,43 @@ class Price(UUIDIDMixin, BaseModelCompanyMixin, PriceBuyerDataMixin):
         on_delete=models.DO_NOTHING,
         null=True,
         blank=True,
+        verbose_name=_("Payment"),
     )
 
     supplier = models.ForeignKey(
         "common.Supplier",
         on_delete=models.DO_NOTHING,
+        verbose_name=_("Supplier"),
     )
 
     def __str__(self):
         return f"{self.pk}-{self.erp_code}"
+
+    class Meta:
+        verbose_name = _("Price")
+        verbose_name_plural = _("Prices")
 
 
 class PriceItemBuyerDataMixin(models.Model):
     product = models.ForeignKey(
         "common.Product",
         on_delete=models.DO_NOTHING,
+        verbose_name=_("Product"),
     )
     product_observation = models.TextField(
         null=True,
         blank=True,
+        verbose_name=_("Product observation"),
     )
     unity = models.ForeignKey(
         "common.Unity",
         on_delete=models.DO_NOTHING,
+        verbose_name=_("Unity"),
     )
     quantity_refer = models.DecimalField(
         max_digits=15,
         decimal_places=6,
+        verbose_name=_("Quantity refer"),
     )
 
     class Meta:
@@ -91,14 +111,17 @@ class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
     price = models.ForeignKey(
         "price.Price",
         on_delete=models.CASCADE,
+        verbose_name=_("Price"),
     )
     quantity = models.DecimalField(
         max_digits=15,
         decimal_places=6,
+        verbose_name=_("Quantity"),
     )
     unitary = models.DecimalField(
         max_digits=15,
         decimal_places=6,
+        verbose_name=_("Unitary"),
     )
     tax = models.DecimalField(
         max_digits=15,
@@ -106,6 +129,7 @@ class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
         default=0,
         null=True,
         blank=True,
+        verbose_name=_("Tax"),
     )
     shipping = models.DecimalField(
         max_digits=15,
@@ -113,6 +137,7 @@ class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
         default=0,
         null=True,
         blank=True,
+        verbose_name=_("Shipping"),
     )
     discount = models.DecimalField(
         max_digits=15,
@@ -120,6 +145,7 @@ class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
         default=0,
         null=True,
         blank=True,
+        verbose_name=_("Discount"),
     )
     rounding = models.DecimalField(
         max_digits=15,
@@ -127,11 +153,17 @@ class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
         default=0,
         null=True,
         blank=True,
+        verbose_name=_("Rounding"),
     )
     supplier_observation = models.TextField(
         null=True,
         blank=True,
+        verbose_name=_("Supplier observation"),
     )
 
     def __str__(self):
         return f"{self.pk}-{self.price.erp_code}-{self.product.erp_code}"
+
+    class Meta:
+        verbose_name = _("Price Item")
+        verbose_name_plural = _("Price Items")

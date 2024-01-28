@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-27 22:02-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\price\models.py:9
+msgid "Waiting"
+msgstr "Aguardando"
+
+#: .\price\models.py:10
+msgid "Filling in"
+msgstr "Preenchendo"
+
+#: .\price\models.py:11
+msgid "Finished"
+msgstr "Finalizado"
+
+#: .\price\models.py:12
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#: .\price\models.py:20
+msgid "Payment refer"
+msgstr "Referência de Pagamento"
+
+#: .\price\models.py:25
+msgid "Buyer"
+msgstr "Comprador"
+
+#: .\price\models.py:28
+msgid "Started at"
+msgstr "Iniciado em"
+
+#: .\price\models.py:31
+msgid "Expire at"
+msgstr "Expira em"
+
+#: .\price\models.py:36
+msgid "Recommendation"
+msgstr "Recomendação"
+
+#: .\price\models.py:42
+msgid "Priority"
+msgstr "Prioridade"
+
+#: .\price\models.py:54
+msgid "Status"
+msgstr "Status"
+
+#: .\price\models.py:59
+msgid "ERP code"
+msgstr "Código do ERP"
+
+#: .\price\models.py:67
+msgid "Payment"
+msgstr "Pagamento"
+
+#: .\price\models.py:73
+msgid "Supplier"
+msgstr "Fornecedor"
+
+#: .\price\models.py:80 .\price\models.py:114
+msgid "Price"
+msgstr "Cotação"
+
+#: .\price\models.py:81
+msgid "Prices"
+msgstr "Cotações"
+
+#: .\price\models.py:88
+msgid "Product"
+msgstr "Produto"
+
+#: .\price\models.py:93
+msgid "Product observation"
+msgstr "Observação do Produto"
+
+#: .\price\models.py:98
+msgid "Unity"
+msgstr "Unidade"
+
+#: .\price\models.py:103
+msgid "Quantity refer"
+msgstr "Quantidade de Referência"
+
+#: .\price\models.py:119
+msgid "Quantity"
+msgstr "Quantidade"
+
+#: .\price\models.py:124
+msgid "Unitary"
+msgstr "Unitário"
+
+#: .\price\models.py:132
+msgid "Tax"
+msgstr "Imposto"
+
+#: .\price\models.py:140
+msgid "Shipping"
+msgstr "Frete"
+
+#: .\price\models.py:148
+msgid "Discount"
+msgstr "Desconto"
+
+#: .\price\models.py:156
+msgid "Rounding"
+msgstr "Arredondamento"
+
+#: .\price\models.py:161
+msgid "Supplier observation"
+msgstr "Observação do Fornecedor"
+
+#: .\price\models.py:168
+msgid "Price Item"
+msgstr "Item da Cotação"
+
+#: .\price\models.py:169
+msgid "Price Items"
+msgstr "Itens da Cotação"

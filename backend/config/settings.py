@@ -1,7 +1,7 @@
 import datetime
 import os
-
 from pathlib import Path
+
 from decouple import Csv, config
 from dj_database_url import parse as dburl
 
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -101,6 +102,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
 STATIC_PATH = config("STATIC_PATH", default="static")
 MEDIA_PATH = config("MEDIA_PATH", default="media")
@@ -180,4 +183,3 @@ EMAIL_HOST_USER = config("MAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("MAIL_HOST_PASSWORD")
 EMAIL_PORT = config("MAIL_PORT", cast=int)
 EMAIL_USE_TLS = config("MAIL_USE_TLS", cast=bool)
-
