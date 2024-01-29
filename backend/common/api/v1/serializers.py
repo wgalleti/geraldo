@@ -5,6 +5,7 @@ from common.models import (
     Product,
     Buyer,
     Supplier,
+    ProductGroup,
 )
 
 
@@ -17,6 +18,12 @@ class PaymentSerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
 class UnitySerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
     class Meta:
         model = Unity
+        fields = "__all__"
+
+
+class ProductGroupSerializerV1(BaseNotERPSerializerV1, BaseCompanySerializerV1):
+    class Meta:
+        model = ProductGroup
         fields = "__all__"
 
 

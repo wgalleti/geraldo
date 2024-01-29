@@ -6,11 +6,13 @@ from common.api.v1.views import (
     ProductViewSetV1,
     BuyerViewSetV1,
     SupplierViewSetV1,
+    ProductGroupViewSetV1,
 )
 
 router = routers.DefaultRouter()
 router.register(r"payments", PaymentViewSetV1)
 router.register(r"unities", UnityViewSetV1)
+router.register(r"product-groups", ProductGroupViewSetV1)
 router.register(r"products", ProductViewSetV1)
 router.register(r"buyers", BuyerViewSetV1)
 router.register(r"suppliers", SupplierViewSetV1)
