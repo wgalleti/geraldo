@@ -1,5 +1,6 @@
 import {DataGrid} from "devextreme-react";
 import ProductGroup from "../../api/product.group.js";
+import {Col} from "react-bootstrap";
 
 const requiredField = {type: "required", message: "This field is required"};
 
@@ -50,7 +51,7 @@ export default function ProductGroupPage() {
                 height: "auto",
                 width: "80%",
                 showTitle: true,
-                title: "Comprador",
+                title: "Grupo de Produto",
                 shadingColor: "rgba(0,0,0, 0.7)",
             },
             form: {
@@ -75,9 +76,9 @@ export default function ProductGroupPage() {
     };
     return (
         <>
-            <div className="container mx-auto py-4">
+            <Col className="backdrop-blur-sm">
                 <DataGrid dataSource={dataSource} {...gridOptions} />
-            </div>
+            </Col>
         </>
     );
 }

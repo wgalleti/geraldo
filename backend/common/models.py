@@ -5,12 +5,19 @@ from django.utils.translation import gettext_lazy as _
 from base.mixins import BaseModelCompanyMixin, UUIDIDMixin
 
 
-class Payment(BaseModelCompanyMixin):
+class BaseERPCodeMixin(BaseModelCompanyMixin):
     erp_code = models.CharField(
         max_length=255,
-        unique=True,
         verbose_name=_("ERP code"),
+        null=True,
+        blank=True,
     )
+
+    class Meta:
+        abstract = True
+
+
+class Payment(BaseERPCodeMixin):
     name = models.CharField(
         max_length=255,
         verbose_name=_("Name"),
@@ -24,12 +31,7 @@ class Payment(BaseModelCompanyMixin):
         verbose_name_plural = _("Payments")
 
 
-class Unity(BaseModelCompanyMixin):
-    erp_code = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("ERP code"),
-    )
+class Unity(BaseERPCodeMixin):
     name = models.CharField(
         max_length=255,
         verbose_name=_("Name"),
@@ -43,12 +45,7 @@ class Unity(BaseModelCompanyMixin):
         verbose_name_plural = _("Unities")
 
 
-class ProductGroup(BaseModelCompanyMixin):
-    erp_code = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("ERP code"),
-    )
+class ProductGroup(BaseERPCodeMixin):
     name = models.CharField(
         max_length=255,
         verbose_name=_("Name"),
@@ -68,12 +65,7 @@ class Priority(models.TextChoices):
     NO_WAITING = "no_waiting", _("No waiting")
 
 
-class Product(BaseModelCompanyMixin):
-    erp_code = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("ERP code"),
-    )
+class Product(BaseERPCodeMixin):
     name = models.CharField(
         max_length=255,
         verbose_name=_("Name"),
@@ -101,12 +93,7 @@ class Product(BaseModelCompanyMixin):
         verbose_name_plural = _("Products")
 
 
-class Buyer(UUIDIDMixin, BaseModelCompanyMixin):
-    erp_code = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("ERP code"),
-    )
+class Buyer(UUIDIDMixin, BaseERPCodeMixin):
     name = models.CharField(
         max_length=255,
         verbose_name=_("Name"),
@@ -128,12 +115,7 @@ class Buyer(UUIDIDMixin, BaseModelCompanyMixin):
         verbose_name_plural = _("Buyers")
 
 
-class Supplier(UUIDIDMixin, BaseModelCompanyMixin):
-    erp_code = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("ERP code"),
-    )
+class Supplier(UUIDIDMixin, BaseERPCodeMixin):
     name = models.CharField(
         max_length=255,
         verbose_name=_("Name"),

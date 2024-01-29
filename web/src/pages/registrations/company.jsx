@@ -1,5 +1,6 @@
 import Company from "../../api/company.js";
 import {DataGrid} from "devextreme-react";
+import {Col, Row} from "react-bootstrap";
 
 const requiredField = {type: "required", message: "This field is required"};
 
@@ -79,9 +80,9 @@ export default function CompanyPage() {
     };
     return (
         <>
-            <div className="container mx-auto py-4">
+            <Col className="backdrop-blur-sm">
                 <DataGrid dataSource={dataSource} {...gridOptions} />
-            </div>
+            </Col>
         </>
     );
 }

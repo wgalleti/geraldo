@@ -1,5 +1,6 @@
 import {DataGrid} from "devextreme-react";
 import Payment from "../../api/payment.js";
+import {Col} from "react-bootstrap";
 
 const requiredField = {type: "required", message: "This field is required"};
 
@@ -75,9 +76,9 @@ export default function PaymentPage() {
     };
     return (
         <>
-            <div className="container mx-auto py-4">
+            <Col className="backdrop-blur-sm">
                 <DataGrid dataSource={dataSource} {...gridOptions} />
-            </div>
+            </Col>
         </>
     );
 }

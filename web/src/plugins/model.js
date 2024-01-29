@@ -61,7 +61,7 @@ export default class Model {
 
     async delete(key) {
         try {
-            await this.http.delete(`${this.resource}/${key}`);
+            await this.http.delete(`${this.resource}${key}`);
         } catch (e) {
             console.error(e);
         }
