@@ -45,6 +45,25 @@ services:
         aliases:
           - api
     restart: unless-stopped
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    hostname: web
+    depends_on:
+      - api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "localhost:127.0.0.1"
+    env_file:
+      - ./web/.env
+    networks:
+      backend:
+        aliases:
+          - web
+    restart: unless-stopped
 networks:
   backend:
     name: backend
