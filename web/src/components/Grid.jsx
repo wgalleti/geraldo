@@ -5,23 +5,26 @@ import {merge} from "lodash";
 const Grid = ({dataSource = null, gridCustom = {}, title = ""}) => {
     const grid = useRef();
     const gridConfig = useMemo(() => {
-        let base = {
-            toolbar: {
-                items: [
-                    "searchPanel",
-                    "addRowButton",
-                    {
-                        widget: "dxButton",
-                        location: "before",
-                        options: {
-                            icon: "refresh",
-                            onClick: () => {
-                                grid.current.instance.refresh();
-                            },
-                        },
+
+        const itemsToolbar = gridCustom?.toolbar?.items || [];
+
+        const itemsBaseToolbar = [
+            "searchPanel",
+            "addRowButton",
+            {
+                widget: "dxButton",
+                location: "before",
+                options: {
+                    icon: "refresh",
+                    onClick: () => {
+                        grid.current.instance.refresh();
                     },
-                ],
+                },
             },
+        ]
+
+
+        let base = {
             searchPanel: {
                 visible: true,
                 searchVisibleColumnsOnly: true,
@@ -91,7 +94,16 @@ const Grid = ({dataSource = null, gridCustom = {}, title = ""}) => {
             },
         }
 
-        return merge(base, gridCustom)
+        const merged_data = merge(base, gridCustom)
+        merged_data.toolbar = {
+            items: [
+                ...itemsBaseToolbar,
+                ...itemsToolbar
+            ],
+        }
+
+        return merged_data
+
     }, [gridCustom, title])
 
     return (

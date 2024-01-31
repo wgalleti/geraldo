@@ -1,8 +1,11 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from base.mixins import BaseModelMixin, UUIDIDMixin, BaseModelCompanyMixin
-from common.models import Priority, BaseERPCodeMixin
+from common.models import BaseERPCodeMixin
+from price.mixins import PriceBuyerDataMixin, PriceItemBuyerDataMixin
+from utils.dates import date_diff_translated
 
 
 class PriceStatus(models.TextChoices):
@@ -12,41 +15,12 @@ class PriceStatus(models.TextChoices):
     CANCELLED = "canceled", _("Cancelled")
 
 
-class PriceBuyerDataMixin(models.Model):
-    payment_refer = models.ForeignKey(
-        "common.Payment",
-        on_delete=models.DO_NOTHING,
-        related_name="payment_refers",
-        verbose_name=_("Payment refer"),
-    )
-    buyer = models.ForeignKey(
-        "common.Buyer",
-        on_delete=models.DO_NOTHING,
-        verbose_name=_("Buyer"),
-    )
-    started_at = models.DateField(
-        verbose_name=_("Started at"),
-    )
-    expire_at = models.DateField(
-        verbose_name=_("Expire at"),
-    )
-    recommendation = models.TextField(
-        null=True,
-        blank=True,
-        verbose_name=_("Recommendation"),
-    )
-    priority = models.CharField(
-        max_length=255,
-        choices=Priority,
-        default=Priority.NORMAL,
-        verbose_name=_("Priority"),
-    )
-
-    class Meta:
-        abstract = True
-
-
-class Price(UUIDIDMixin, BaseERPCodeMixin, BaseModelCompanyMixin, PriceBuyerDataMixin):
+class Price(
+    UUIDIDMixin,
+    BaseERPCodeMixin,
+    BaseModelCompanyMixin,
+    PriceBuyerDataMixin,
+):
     status = models.CharField(
         max_length=255,
         choices=PriceStatus,
@@ -68,6 +42,25 @@ class Price(UUIDIDMixin, BaseERPCodeMixin, BaseModelCompanyMixin, PriceBuyerData
         verbose_name=_("Supplier"),
     )
 
+    @property
+    def duration_time(self):
+        return date_diff_translated(self.created_at, timezone.now())
+
+    @property
+    def completed_percent(self):
+        qs = self.price_items.all()
+        pending = sum(item.quantity_pending for item in qs)
+        quantity = sum(item.quantity for item in qs)
+        return quantity / pending
+
+    @property
+    def items_count(self):
+        return self.price_items.count()
+
+    @property
+    def value_total(self):
+        return sum(item.value_total for item in self.price_items.all())
+
     def __str__(self):
         return f"{self.pk}-{self.erp_code}"
 
@@ -76,39 +69,17 @@ class Price(UUIDIDMixin, BaseERPCodeMixin, BaseModelCompanyMixin, PriceBuyerData
         verbose_name_plural = _("Prices")
 
 
-class PriceItemBuyerDataMixin(models.Model):
-    product = models.ForeignKey(
-        "common.Product",
-        on_delete=models.DO_NOTHING,
-        verbose_name=_("Product"),
-    )
-    product_observation = models.TextField(
-        null=True,
-        blank=True,
-        verbose_name=_("Product observation"),
-    )
-    unity = models.ForeignKey(
-        "common.Unity",
-        on_delete=models.DO_NOTHING,
-        verbose_name=_("Unity"),
-    )
-    quantity_refer = models.DecimalField(
-        max_digits=15,
-        decimal_places=6,
-        verbose_name=_("Quantity refer"),
-    )
-
-    class Meta:
-        abstract = True
-
-
 class PriceItem(
-    UUIDIDMixin, BaseERPCodeMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin
+    UUIDIDMixin,
+    BaseERPCodeMixin,
+    BaseModelCompanyMixin,
+    PriceItemBuyerDataMixin,
 ):
     price = models.ForeignKey(
         "price.Price",
         on_delete=models.CASCADE,
         verbose_name=_("Price"),
+        related_name="price_items",
     )
     quantity = models.DecimalField(
         max_digits=15,
@@ -163,6 +134,20 @@ class PriceItem(
         blank=True,
         verbose_name=_("Supplier observation"),
     )
+
+    @property
+    def quantity_pending(self):
+        return self.quantity_refer - self.quantity
+
+    @property
+    def value_total(self):
+        return (
+            self.unitary * self.quantity
+            + self.tax
+            + self.shipping
+            - self.rounding
+            - self.discount
+        )
 
     def __str__(self):
         return f"{self.pk}-{self.price.erp_code}-{self.product.erp_code}"

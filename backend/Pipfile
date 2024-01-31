@@ -16,6 +16,7 @@ python-decouple = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
 dj-rest-auth = "*"
+python-dateutil = "*"
 
 [dev-packages]
 black = "*"
