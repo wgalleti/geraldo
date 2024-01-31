@@ -54,3 +54,8 @@ class BuyerViewSetV1(BaseViewSetV1):
 class SupplierViewSetV1(BaseViewSetV1):
     serializer_class = SupplierSerializerV1
     queryset = Supplier.objects.all()
+    search_fields = (
+        "id",
+        "name",
+        "email",
+    )

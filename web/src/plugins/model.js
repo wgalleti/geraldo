@@ -55,13 +55,41 @@ export default class Model {
     makeCustomStore(filter = {}) {
         return new CustomStore({
             key: this.keyField,
-            load: async () => {
-                const data = await this.load(filter);
+            load: async (options) => {
+                let ordering = null
+                if (options.sort) {
+                    ordering = options.sort.map(s => s.desc ? `-${s.selector}` : s.selector).join()
+                }
+                const {skip, take} = options
+                let searchFilter = {}
+                if (options.filter) {
+                    const list = options.filter.filter(f => Array.isArray(f))
+                    if (list.length > 0) {
+                        searchFilter = {
+                            search: list[0][2]
+                        }
+                    }
+                }
 
+                const data = await this.load({
+                    skip,
+                    take,
+                    ordering,
+                    ...filter,
+                    ...searchFilter,
+                })
+
+                if (skip === undefined) {
+                    return {
+                        data,
+                        totalCount: data.length
+                    }
+                }
                 return {
                     data: data.data,
-                    dataCount: data.total,
-                };
+                    totalCount: data.total
+                }
+
             },
             insert: (data) => this.save(null, data),
             update: (key, data) => this.save(key, data),
