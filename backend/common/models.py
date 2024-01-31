@@ -66,9 +66,21 @@ class Priority(models.TextChoices):
 
 
 class Product(BaseERPCodeMixin):
+    product_group = models.ForeignKey(
+        "common.ProductGroup",
+        on_delete=models.DO_NOTHING,
+        verbose_name=_("Product group"),
+        related_name="groups",
+    )
     name = models.CharField(
         max_length=255,
         verbose_name=_("Name"),
+    )
+    unity = models.ForeignKey(
+        "common.Unity",
+        on_delete=models.DO_NOTHING,
+        verbose_name=_("Unity"),
+        related_name="unities",
     )
     base_code = models.CharField(
         max_length=255,

@@ -1,112 +1,73 @@
-import {DataGrid} from "devextreme-react";
 import Supplier from "../../api/supplier.js";
 import {Col} from "react-bootstrap";
+import {useMemo} from "react";
+import Grid from "../../components/Grid.jsx";
+import {requiredField} from "../../utils/require.js";
 
-const requiredField = {type: "required", message: "This field is required"};
 
 const supplierModel = new Supplier();
 const dataSource = supplierModel.makeCustomStore();
 
 export default function SupplierPage() {
-    let grid;
-
-    const gridOptions = {
-        onInitNewRow: (e) => {
-            e.data.active = true;
-        },
-        onContentReady: (e) => {
-            grid = e.component;
-        },
-        toolbar: {
-            items: [
-                "searchPanel",
-                "addRowButton",
-                {
-                    widget: "dxButton",
-                    location: "before",
-                    options: {
-                        icon: "refresh",
-                        onClick: () => {
-                            grid.refresh();
-                        },
-                    },
-                },
+    const gridOptions = useMemo(() => {
+        return {
+            onInitNewRow: (e) => {
+                e.data.rating = 3;
+            },
+            columns: [
+                {dataField: "id", caption: "#"},
+                {dataField: "erp_code", caption: "Código ERP"},
+                {dataField: "name", caption: "Nome"},
+                {dataField: "alias", caption: "Apelido"},
+                {dataField: "document", caption: "Documento"},
+                {dataField: "email", caption: "Email"},
+                {dataField: "rating", caption: "Classificação", dataType: "number"},
             ],
-        },
-        columns: [
-            {dataField: "id", caption: "#"},
-            {dataField: "erp_code", caption: "Código ERP"},
-            {dataField: "name", caption: "Nome"},
-            {dataField: "alias", caption: "Apelido"},
-            {dataField: "document", caption: "Documento"},
-            {dataField: "email", caption: "Email"},
-            {dataField: "rating", caption: "Classificação", dataType: "number"},
-        ],
-        searchPanel: {
-            visible: true,
-        },
-        editing: {
-            allowAdding: true,
-            allowUpdating: true,
-            allowDeleting: true,
-            useIcons: true,
-            mode: "popup",
-            popup: {
-                height: "auto",
-                width: "80%",
-                showTitle: true,
-                title: "Comprador",
-                shadingColor: "rgba(0,0,0, 0.7)",
-            },
-            form: {
-                focusStateEnabled: true,
-                hoverStateEnabled: true,
-                activeStateEnabled: true,
-                scrollingEnabled: true,
-                tabIndex: 0,
-                labelLocation: "top",
-                showColonAfterLabel: false,
-                showValidationSummary: false,
-                colCount: 4,
-                items: [
-                    {
-                        dataField: "name",
-                        colSpan: 3,
-                        validationRules: [requiredField],
-                    },
-                    {
-                        dataField: "alias",
-                        colSpan: 1,
-                        validationRules: [requiredField],
-                    },
-                    {
-                        dataField: "document",
-                        colSpan: 1,
-                        validationRules: [requiredField],
-                    },
-                    {
-                        dataField: "email",
-                        colSpan: 2,
-                        validationRules: [requiredField],
-                    },
-                    {
-                        dataField: "rating",
-                        colSpan: 1,
-                        validationRules: [requiredField],
-                        editorOptions: {
-                            min: 10,
-                            max: 20,
-                            showSpinButtons: true,
-                        }
-                    },
-                ],
-            },
-        },
-    };
+            editing: {
+                form: {
+                    colCount: 4,
+                    items: [
+                        {
+                            dataField: "name",
+                            colSpan: 3,
+                            validationRules: [requiredField],
+                        },
+                        {
+                            dataField: "alias",
+                            colSpan: 1,
+                            validationRules: [requiredField],
+                        },
+                        {
+                            dataField: "document",
+                            colSpan: 1,
+                            validationRules: [requiredField],
+                        },
+                        {
+                            dataField: "email",
+                            colSpan: 2,
+                            validationRules: [requiredField],
+                        },
+                        {
+                            dataField: "rating",
+                            colSpan: 1,
+                            validationRules: [requiredField],
+                            editorOptions: {
+                                min: 0,
+                                max: 5,
+                                showSpinButtons: true,
+                            }
+                        },
+                    ],
+                }
+            }
+        }
+    }, []);
+
+
     return (
         <>
             <Col className="backdrop-blur-sm">
-                <DataGrid dataSource={dataSource} {...gridOptions} />
+                <Grid dataSource={dataSource} gridCustom={gridOptions}/>
             </Col>
         </>
     );

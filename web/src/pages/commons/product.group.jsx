@@ -1,83 +1,42 @@
-import {DataGrid} from "devextreme-react";
 import ProductGroup from "../../api/product.group.js";
 import {Col} from "react-bootstrap";
+import {useMemo} from "react";
+import Grid from "../../components/Grid.jsx";
+import {requiredField} from "../../utils/require.js";
 
-const requiredField = {type: "required", message: "This field is required"};
 
 const productGroupModel = new ProductGroup();
 const dataSource = productGroupModel.makeCustomStore();
 
 export default function ProductGroupPage() {
-    let grid;
-
-    const gridOptions = {
-        onInitNewRow: (e) => {
-            e.data.active = true;
-        },
-        onContentReady: (e) => {
-            grid = e.component;
-        },
-        toolbar: {
-            items: [
-                "searchPanel",
-                "addRowButton",
-                {
-                    widget: "dxButton",
-                    location: "before",
-                    options: {
-                        icon: "refresh",
-                        onClick: () => {
-                            grid.refresh();
-                        },
-                    },
-                },
+    const gridOptions = useMemo(() => {
+        return {
+            columns: [
+                {dataField: "id", caption: "#", visible: false,},
+                {dataField: "erp_code", caption: "Código ERP", width: 150},
+                {dataField: "name", caption: "Nome"},
             ],
-        },
-        columns: [
-            {dataField: "id", caption: "#"},
-            {dataField: "erp_code", caption: "Código ERP"},
-            {dataField: "name", caption: "Nome"},
-        ],
-        searchPanel: {
-            visible: true,
-        },
-        editing: {
-            allowAdding: true,
-            allowUpdating: true,
-            allowDeleting: true,
-            useIcons: true,
-            mode: "popup",
-            popup: {
-                height: "auto",
-                width: "80%",
-                showTitle: true,
-                title: "Grupo de Produto",
-                shadingColor: "rgba(0,0,0, 0.7)",
-            },
-            form: {
-                focusStateEnabled: true,
-                hoverStateEnabled: true,
-                activeStateEnabled: true,
-                scrollingEnabled: true,
-                tabIndex: 0,
-                labelLocation: "top",
-                showColonAfterLabel: false,
-                showValidationSummary: false,
-                colCount: 4,
-                items: [
-                    {
-                        dataField: "name",
-                        colSpan: 4,
-                        validationRules: [requiredField],
-                    },
-                ],
-            },
-        },
-    };
+            editing: {
+                popup: {
+                    height: "auto",
+                    width: "400",
+                },
+                form: {
+                    items: [
+                        {
+                            dataField: "name",
+                            colSpan: 4,
+                            validationRules: [requiredField],
+                        },
+                    ],
+                }
+            }
+        }
+    }, []);
     return (
         <>
             <Col className="backdrop-blur-sm">
-                <DataGrid dataSource={dataSource} {...gridOptions} />
+                <Grid dataSource={dataSource} gridCustom={gridOptions}/>
             </Col>
         </>
     );

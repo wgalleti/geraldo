@@ -1,95 +1,55 @@
 import Buyer from "../../api/buyer.js";
-import {DataGrid} from "devextreme-react";
 import {Col} from "react-bootstrap";
-
-const requiredField = {type: "required", message: "This field is required"};
+import {useMemo} from "react";
+import Grid from "../../components/Grid.jsx";
+import {requiredField} from "../../utils/require.js";
 
 const buyerModel = new Buyer();
 const dataSource = buyerModel.makeCustomStore();
 
 export default function BuyerPage() {
-    let grid;
 
-    const gridOptions = {
-        onInitNewRow: (e) => {
-            e.data.active = true;
-        },
-        onContentReady: (e) => {
-            grid = e.component;
-        },
-        toolbar: {
-            items: [
-                "searchPanel",
-                "addRowButton",
-                {
-                    widget: "dxButton",
-                    location: "before",
-                    options: {
-                        icon: "refresh",
-                        onClick: () => {
-                            grid.refresh();
-                        },
-                    },
-                },
+    const gridOptions = useMemo(() => {
+        return {
+            columns: [
+                {dataField: "id", caption: "#", visible: false,},
+                {dataField: "erp_code", caption: "Código ERP"},
+                {dataField: "name", caption: "Nome"},
+                {dataField: "alias", caption: "Apelido"},
+                {dataField: "email", caption: "Email"},
             ],
-        },
-        columns: [
-            {dataField: "id", caption: "#"},
-            {dataField: "erp_code", caption: "Código ERP"},
-            {dataField: "name", caption: "Nome"},
-            {dataField: "alias", caption: "Apelido"},
-            {dataField: "email", caption: "Email"},
-        ],
-        searchPanel: {
-            visible: true,
-        },
-        editing: {
-            allowAdding: true,
-            allowUpdating: true,
-            allowDeleting: true,
-            useIcons: true,
-            mode: "popup",
-            popup: {
-                height: "auto",
-                width: "80%",
-                showTitle: true,
-                title: "Comprador",
-                shadingColor: "rgba(0,0,0, 0.7)",
-            },
-            form: {
-                focusStateEnabled: true,
-                hoverStateEnabled: true,
-                activeStateEnabled: true,
-                scrollingEnabled: true,
-                tabIndex: 0,
-                labelLocation: "top",
-                showColonAfterLabel: false,
-                showValidationSummary: false,
-                colCount: 4,
-                items: [
-                    {
-                        dataField: "name",
-                        colSpan: 3,
-                        validationRules: [requiredField],
-                    },
-                    {
-                        dataField: "alias",
-                        colSpan: 1,
-                        validationRules: [requiredField],
-                    },
-                    {
-                        dataField: "email",
-                        colSpan: 4,
-                        validationRules: [requiredField],
-                    },
-                ],
-            },
-        },
-    };
+            editing: {
+                popup: {
+                    height: "auto",
+                    width: "600",
+                },
+                form: {
+                    items: [
+                        {
+                            dataField: "name",
+                            colSpan: 3,
+                            validationRules: [requiredField],
+                        },
+                        {
+                            dataField: "alias",
+                            colSpan: 1,
+                            validationRules: [requiredField],
+                        },
+                        {
+                            dataField: "email",
+                            colSpan: 4,
+                            validationRules: [requiredField],
+                        },
+                    ],
+                }
+            }
+        }
+    }, []);
+
     return (
         <>
             <Col className="backdrop-blur-sm">
-                <DataGrid dataSource={dataSource} {...gridOptions} />
+                <Grid dataSource={dataSource} gridCustom={gridOptions}/>
             </Col>
         </>
     );
