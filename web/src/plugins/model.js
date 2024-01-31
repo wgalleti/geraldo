@@ -14,35 +14,23 @@ export default class Model {
     }
 
     async load(filters = {}) {
-        try {
-            const {data} = await this.http.get(this.resource, {
-                params: {...filters, ...this.constFilter},
-            });
-            return data;
-        } catch (e) {
-            console.error(e);
-        }
+        const {data} = await this.http.get(this.resource, {
+            params: {...filters, ...this.constFilter},
+        });
+        return data;
     }
 
     async find(key) {
-        try {
-            const {data} = await this.http.get(
-                this._checkResource(`${this.resource}${key}`)
-            );
-            return data;
-        } catch (e) {
-            console.error(e);
-        }
+        const {data} = await this.http.get(
+            this._checkResource(`${this.resource}${key}`)
+        );
+        return data;
     }
 
     async loadDetail(detailName) {
-        try {
-            const resource = this._checkResource(`${this.resource}${detailName}`);
-            const {data} = await this.http.get(resource);
-            return data;
-        } catch (e) {
-            console.error(e);
-        }
+        const resource = this._checkResource(`${this.resource}${detailName}`);
+        const {data} = await this.http.get(resource);
+        return data;
     }
 
     async save(key, item) {
@@ -55,32 +43,25 @@ export default class Model {
             const {data} = await this.http.post(this.resource, item);
             return data;
         } catch (e) {
-            console.error(e);
+            const message = e.response ? e.response.data[0] : e.message;
+            throw new Error(message);
         }
     }
 
     async delete(key) {
-        try {
-            await this.http.delete(`${this.resource}${key}`);
-        } catch (e) {
-            console.error(e);
-        }
+        await this.http.delete(`${this.resource}${key}`);
     }
 
     makeCustomStore(filter = {}) {
         return new CustomStore({
             key: this.keyField,
-            load: async (options) => {
-                try {
-                    const data = await this.load(filter);
+            load: async () => {
+                const data = await this.load(filter);
 
-                    return {
-                        data,
-                        dataCount: data.length,
-                    };
-                } catch (e) {
-                    console.error(e);
-                }
+                return {
+                    data: data.data,
+                    dataCount: data.total,
+                };
             },
             insert: (data) => this.save(null, data),
             update: (key, data) => this.save(key, data),
