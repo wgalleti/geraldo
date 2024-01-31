@@ -20,7 +20,7 @@ export default function ProductPage() {
                 e.data.priority = "normal";
             },
             columns: [
-                {dataField: "id", caption: "#", width: 50},
+                {dataField: "id", caption: "#", width: 50, visible: false},
                 {dataField: "erp_code", caption: "Código ERP", visible: false},
                 {
                     dataField: "product_group",

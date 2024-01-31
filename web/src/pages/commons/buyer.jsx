@@ -13,7 +13,7 @@ export default function BuyerPage() {
         return {
             columns: [
                 {dataField: "id", caption: "#", visible: false,},
-                {dataField: "erp_code", caption: "Código ERP"},
+                {dataField: "erp_code", caption: "Código ERP", visible: false},
                 {dataField: "name", caption: "Nome"},
                 {dataField: "alias", caption: "Apelido"},
                 {dataField: "email", caption: "Email"},

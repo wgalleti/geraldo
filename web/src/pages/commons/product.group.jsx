@@ -13,7 +13,7 @@ export default function ProductGroupPage() {
         return {
             columns: [
                 {dataField: "id", caption: "#", visible: false,},
-                {dataField: "erp_code", caption: "Código ERP", width: 150},
+                {dataField: "erp_code", caption: "Código ERP", width: 150, visible: false},
                 {dataField: "name", caption: "Nome"},
             ],
             editing: {

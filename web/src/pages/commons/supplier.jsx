@@ -15,8 +15,8 @@ export default function SupplierPage() {
                 e.data.rating = 3;
             },
             columns: [
-                {dataField: "id", caption: "#"},
-                {dataField: "erp_code", caption: "Código ERP"},
+                {dataField: "id", caption: "#", visible: false},
+                {dataField: "erp_code", caption: "Código ERP", visible: false},
                 {dataField: "name", caption: "Nome"},
                 {dataField: "alias", caption: "Apelido"},
                 {dataField: "document", caption: "Documento"},

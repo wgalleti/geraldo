@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from base.mixins import BaseModelMixin, UUIDIDMixin, BaseModelCompanyMixin
-from common.models import Priority
+from common.models import Priority, BaseERPCodeMixin
 
 
 class PriceStatus(models.TextChoices):
@@ -46,17 +46,12 @@ class PriceBuyerDataMixin(models.Model):
         abstract = True
 
 
-class Price(UUIDIDMixin, BaseModelCompanyMixin, PriceBuyerDataMixin):
+class Price(UUIDIDMixin, BaseERPCodeMixin, BaseModelCompanyMixin, PriceBuyerDataMixin):
     status = models.CharField(
         max_length=255,
         choices=PriceStatus,
         default=PriceStatus.WAITING,
         verbose_name=_("Status"),
-    )
-    erp_code = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("ERP code"),
     )
     payment = models.ForeignKey(
         "common.Payment",
@@ -107,7 +102,9 @@ class PriceItemBuyerDataMixin(models.Model):
         abstract = True
 
 
-class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
+class PriceItem(
+    UUIDIDMixin, BaseERPCodeMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin
+):
     price = models.ForeignKey(
         "price.Price",
         on_delete=models.CASCADE,
@@ -117,11 +114,17 @@ class PriceItem(UUIDIDMixin, BaseModelCompanyMixin, PriceItemBuyerDataMixin):
         max_digits=15,
         decimal_places=6,
         verbose_name=_("Quantity"),
+        null=True,
+        blank=True,
+        default=0,
     )
     unitary = models.DecimalField(
         max_digits=15,
         decimal_places=6,
         verbose_name=_("Unitary"),
+        null=True,
+        blank=True,
+        default=0,
     )
     tax = models.DecimalField(
         max_digits=15,
