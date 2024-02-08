@@ -3,5 +3,15 @@
 @tailwind utilities;
 
 body {
-    @apply bg-neutral-800;
+  @apply bg-neutral-800;
+}
+
+.dx-layout-manager .dx-field-item:not(.dx-first-col) {
+  -webkit-padding-start: 5px;
+  padding-inline-start: 5px;
+}
+
+.dx-layout-manager .dx-field-item:not(.dx-last-col) {
+  -webkit-padding-end: 5px;
+  padding-inline-end: 5px;
 }
