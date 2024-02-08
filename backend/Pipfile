@@ -25,6 +25,7 @@ factory-boy = "*"
 model-bakery = "*"
 pytest-cov = "*"
 jupyter = "*"
+pydevd-pycharm = "~=233.13763.11"
 
 [requires]
 python_version = "3.12"

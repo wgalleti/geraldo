@@ -49,9 +49,9 @@ class Price(
     @property
     def completed_percent(self):
         qs = self.price_items.all()
-        pending = sum(item.quantity_pending for item in qs)
-        quantity = sum(item.quantity for item in qs)
-        return quantity / pending
+        pending = qs.filter(filled=True).count()
+        quantity = qs.count()
+        return pending / quantity * 100
 
     @property
     def items_count(self):
@@ -134,10 +134,18 @@ class PriceItem(
         blank=True,
         verbose_name=_("Supplier observation"),
     )
+    filled = models.BooleanField(
+        default=False,
+        verbose_name=_("Filled"),
+    )
 
     @property
     def quantity_pending(self):
         return self.quantity_refer - self.quantity
+
+    @property
+    def subtotal(self):
+        return self.unitary * self.quantity
 
     @property
     def value_total(self):
@@ -151,6 +159,10 @@ class PriceItem(
 
     def __str__(self):
         return f"{self.pk}-{self.price.erp_code}-{self.product.erp_code}"
+
+    def save(self, *args, **kwargs):
+        self.filled = self.quantity == self.quantity_refer
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = _("Price Item")

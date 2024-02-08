@@ -109,9 +109,9 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
 };
 
 Grid.propTypes = {
-  dataSource: PropTypes.isRequired,
+  dataSource: PropTypes.object.isRequired,
   gridCustom: PropTypes.object,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default Grid;

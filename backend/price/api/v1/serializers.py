@@ -18,6 +18,11 @@ class PriceItemSerializerV1(serializers.ModelSerializer):
         decimal_places=4,
         read_only=True,
     )
+    subtotal = serializers.DecimalField(
+        max_digits=15,
+        decimal_places=4,
+        read_only=True,
+    )
     value_total = serializers.DecimalField(
         max_digits=15,
         decimal_places=4,

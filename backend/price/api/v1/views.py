@@ -12,5 +12,13 @@ class PriceViewSetV1(BaseViewSetV1):
 
 
 class PriceItemViewSetV1(BaseViewSetV1):
-    queryset = PriceItem.objects.all()
+    queryset = PriceItem.objects.all().order_by("created_at")
     serializer_class = PriceItemSerializerV1
+    search_fields = (
+        "id",
+        "price_id",
+    )
+    filterset_fields = (
+        "id",
+        "price",
+    )
