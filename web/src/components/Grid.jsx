@@ -50,6 +50,7 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
         mode: 'infinite',
       },
       editing: {
+        refreshMode: 'reshape',
         allowAdding: true,
         allowUpdating: true,
         allowDeleting: true,

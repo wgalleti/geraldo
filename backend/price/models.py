@@ -149,13 +149,7 @@ class PriceItem(
 
     @property
     def value_total(self):
-        return (
-            self.unitary * self.quantity
-            + self.tax
-            + self.shipping
-            - self.rounding
-            - self.discount
-        )
+        return self.subtotal + self.tax + self.shipping - self.rounding - self.discount
 
     def __str__(self):
         return f"{self.pk}-{self.price.erp_code}-{self.product.erp_code}"

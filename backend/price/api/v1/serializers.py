@@ -1,4 +1,6 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from base.api.v1.serializers import CompanySerializerV1
 from common.api.v1.serializers import (
@@ -87,3 +89,15 @@ class PriceSerializerV1(serializers.ModelSerializer):
     class Meta:
         model = Price
         fields = "__all__"
+
+    def validate(self, attrs):
+        quantity_refer = self.instance.quantity_refer
+        quantity = attrs.get("quantity", 0)
+
+        if quantity == 0:
+            raise ValidationError(_("Quantity cannot be 0"))
+
+        if quantity > quantity_refer:
+            raise ValidationError(_("Quantity cannot be greater than quantity_refer"))
+
+        return attrs

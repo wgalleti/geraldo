@@ -1,5 +1,5 @@
 import { Form } from 'devextreme-react';
-import { useEffect, useMemo, useCallback } from 'react';
+import { useEffect, useMemo, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import http from '../../plugins/http';
 import { formConfig, form } from './form';
@@ -14,10 +14,14 @@ const unityModel = new Unity();
 
 export default function PricePage() {
   let { priceID } = useParams();
+  let grid;
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+
   const dataSource = useMemo(
     () => priceItemModel.makeCustomStore({ price: priceID }),
     [priceID]
   );
+
   const loadData = useCallback(async () => {
     const { data } = await http.get(`prices/prices/${priceID}/`);
     const formData = {
@@ -41,68 +45,90 @@ export default function PricePage() {
   const gridOptions = useMemo(() => {
     return {
       height: '55vh',
+      onContentReady: e => {
+        grid = e.component;
+      },
       onRowUpdated: () => {
         loadData();
       },
+      onSelectionChanged: e => {
+        setSelectedRowIndex(e.component.getRowIndexByKey(e.selectedRowKeys[0]));
+      },
       onEditingStart: e => {
-        if (e.data && !e.data.quantity) {
-          e.data.quantity = e.data.quantity_refer;
+        debugger;
+        if (e.data.quantity === 0 || e.data.quantity === '') {
+          const editRowKey = grid.option('editing.editRowKey');
+          const rowIndex = grid.getRowIndexByKey(editRowKey);
+          grid.cellValue(rowIndex, 'quantity', e.data.quantity_refer);
         }
       },
       columns: [
         {
           dataField: 'product',
+          caption: 'Produto',
           lookup: {
             dataSource: productModel.lookup(),
             displayExpr: 'name',
             valueExpr: 'id',
           },
+          validationRules: [{ type: 'required' }],
         },
         { dataField: 'product_observation', visible: false },
         {
           dataField: 'unity',
+          caption: 'Unidade',
           lookup: {
             dataSource: unityModel.lookup(),
             displayExpr: 'name',
             valueExpr: 'id',
           },
+          validationRules: [{ type: 'required' }],
         },
         {
           dataField: 'quantity_refer',
+          caption: 'Qtd. Solicitada',
           format: { type: 'fixedPoint', precision: 2 },
           visible: false,
+          validationRules: [{ type: 'required' }],
         },
 
         {
           dataField: 'quantity',
+          caption: 'Quantidade',
           format: { type: 'fixedPoint', precision: 2 },
           setCellValue: (newData, value, currentRowData) => {
             newData.quantity = value;
             const { unitary } = currentRowData;
             newData.subtotal = unitary * value;
           },
+          validationRules: [{ type: 'required' }],
         },
         {
           dataField: 'quantity_pending',
+          caption: 'Qtd. Pendente',
           format: { type: 'fixedPoint', precision: 2 },
         },
         {
           dataField: 'unitary',
+          caption: 'Valor Unitário',
           format: { type: 'fixedPoint', precision: 2 },
           setCellValue: (newData, value, currentRowData) => {
             newData.unitary = value;
             const { quantity } = currentRowData;
             newData.subtotal = quantity * value;
           },
+          validationRules: [{ type: 'required' }],
         },
         {
           dataField: 'subtotal',
+          caption: 'Subtotal',
           format: { type: 'fixedPoint', precision: 2 },
           visible: false,
-          caption: 'Subtotal',
+          validationRules: [{ type: 'required' }],
         },
         {
           dataField: 'tax',
+          caption: 'Imposto',
           format: { type: 'fixedPoint', precision: 2 },
           setCellValue: (newData, value, currentRowData) => {
             newData.tax = value;
@@ -113,6 +139,7 @@ export default function PricePage() {
         },
         {
           dataField: 'shipping',
+          caption: 'Frete',
           format: { type: 'fixedPoint', precision: 2 },
           setCellValue: (newData, value, currentRowData) => {
             newData.shipping = value;
@@ -122,6 +149,7 @@ export default function PricePage() {
         },
         {
           dataField: 'discount',
+          caption: 'Desconto',
           format: { type: 'fixedPoint', precision: 2 },
           setCellValue: (newData, value, currentRowData) => {
             newData.discount = value;
@@ -131,6 +159,7 @@ export default function PricePage() {
         },
         {
           dataField: 'rounding',
+          caption: 'Arredondamento',
           format: { type: 'fixedPoint', precision: 2 },
           setCellValue: (newData, value, currentRowData) => {
             newData.rounding = value;
@@ -140,13 +169,14 @@ export default function PricePage() {
         },
         {
           dataField: 'value_total',
+          caption: 'Valor Total',
           format: { type: 'fixedPoint', precision: 2 },
         },
       ],
       editing: {
         allowAdding: false,
         allowDeleting: false,
-        mode: 'popup',
+        mode: 'form',
         form: {
           colCount: 7,
           items: [
