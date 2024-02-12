@@ -11,6 +11,8 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
     const itemsBaseToolbar = [
       'searchPanel',
       'addRowButton',
+      'saveButton',
+      'revertButton',
       {
         widget: 'dxButton',
         location: 'before',

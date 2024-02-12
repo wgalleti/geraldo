@@ -40,6 +40,10 @@ class ProductGroupViewSetV1(BaseViewSetV1):
 class ProductViewSetV1(BaseViewSetV1):
     serializer_class = ProductSerializerV1
     queryset = Product.objects.all()
+    filterset_fields = (
+        "id",
+        "name",
+    )
 
     @action(detail=False, methods=["get"])
     def priority(self, request, pk=None):

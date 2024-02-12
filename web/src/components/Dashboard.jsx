@@ -29,7 +29,7 @@ export default function Dashboard() {
           widget: 'dxButton',
           location: 'before',
           options: {
-            icon: 'check',
+            icon: 'edit',
             text: 'Definir preço',
             onClick: () => {
               goToPrice();
@@ -40,21 +40,8 @@ export default function Dashboard() {
           widget: 'dxButton',
           location: 'before',
           options: {
-            icon: 'doc',
+            icon: 'print',
             text: 'Detalhes',
-            onClick: () => {
-              console.log('details');
-            },
-          },
-        },
-        {
-          widget: 'dxButton',
-          location: 'after',
-          options: {
-            icon: 'close',
-            text: 'Cancelar',
-            type: 'danger',
-            stylingMode: 'outlined',
             onClick: () => {
               console.log('details');
             },

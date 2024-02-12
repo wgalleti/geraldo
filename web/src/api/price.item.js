@@ -10,7 +10,10 @@ export default class PriceItem extends Model {
     return {
       store: new CustomStore({
         key: 'id',
-        byKey: key => this.load({ id: key }),
+        byKey: async key => {
+          const { data } = await this.load({ id: key });
+          return data[0];
+        },
         load: () => this.load(),
       }),
     };

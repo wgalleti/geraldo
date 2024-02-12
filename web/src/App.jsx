@@ -13,7 +13,13 @@ import { Container } from 'react-bootstrap';
 import PricePage from './pages/price/index.jsx';
 import PriceDetailsPage from './pages/details.jsx';
 
+import ptMessages from 'devextreme/localization/messages/pt.json';
+
+import { locale, loadMessages } from 'devextreme/localization';
+
 export default function App() {
+  loadMessages(ptMessages);
+  locale(navigator.language);
   return (
     <>
       <BrowserRouter>
