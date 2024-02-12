@@ -13,8 +13,12 @@ ENV PIPENV_VENV_IN_PROJECT 1
 
 COPY Pipfile Pipfile.lock ./
 
+RUN pip install uwsgi
 RUN pip install -U pipenv
-
 RUN pipenv install -d --system --deploy --ignore-pipfile
 
+RUN mkdir /sockets
+
 COPY . .
+
+CMD ["uwsgi", "--ini", "uswgi.ini"]

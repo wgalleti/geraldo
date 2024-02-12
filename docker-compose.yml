@@ -23,23 +23,19 @@ services:
       dockerfile: Dockerfile
     command: >
       /bin/sh -c "
-      pipenv install -d --system --deploy --ignore-pipfile &&
-      python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000
+      python manage.py collectstatic --noinput &&
+      pwd && 
+      uwsgi --ini uswgi.ini
       "
-    ports:
-      - "8000:8000"
-      - "8888:8888"
     hostname: api
     depends_on:
       - db
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-      - "localhost:127.0.0.1"
     env_file:
       - ./backend/.env
     volumes:
       - ./backend:/api
+      - sockets:/sockets/
+      - statics:/api/static/
     networks:
       backend:
         aliases:
@@ -49,8 +45,6 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
-    ports:
-      - "3000:80"
     hostname: web
     depends_on:
       - api
@@ -59,11 +53,29 @@ services:
       - "localhost:127.0.0.1"
     env_file:
       - ./web/.env
+    volumes:
+      - www:/usr/share/nginx/html/
     networks:
       backend:
         aliases:
           - web
     restart: unless-stopped
+  app:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - sockets:/sockets/
+      - www:/usr/share/nginx/html/
+      - statics:/usr/share/nginx/html/statics/
+    depends_on:
+      - api
+      - web
+volumes:
+  sockets:
+  www:
+  statics:
 networks:
   backend:
     name: backend
