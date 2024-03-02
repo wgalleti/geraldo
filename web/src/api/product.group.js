@@ -6,7 +6,7 @@ export default class ProductGroup extends Model {
     super('commons/product-groups/');
   }
 
-  lookup(type = 1) {
+  lookup() {
     return {
       store: new CustomStore({
         key: 'id',

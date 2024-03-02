@@ -1,19 +1,18 @@
 import { Form } from 'devextreme-react';
-import { useEffect, useMemo, useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import http from '../../plugins/http';
-import { formConfig, form } from './form';
-import PriceItemDefault from '../../components/price-item/Default.jsx';
 import Toolbar from 'devextreme-react/toolbar';
-import Price from '../../api/price.js';
 import { confirm } from 'devextreme/ui/dialog';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Price from '../../api/price.js';
+import PriceItemDefault from '../../components/price-item/Default.jsx';
+import http from '../../plugins/http';
+import { form, formConfig } from './form';
 
 const priceModel = new Price();
 
 export default function PricePage() {
   const [fastFill, setFastFill] = useState(false);
   const [allowEditing, setAllowEditing] = useState(true);
-  const [totalPercentage, setTotalPercentage] = useState(0);
   let { priceID } = useParams();
 
   const changeFastFill = useCallback(
@@ -99,9 +98,8 @@ export default function PricePage() {
       recommendation: data.recommendation,
     };
     form.option('formData', formData);
-    setTotalPercentage(data.completed_percent);
     setAllowEditing(data.status == 'filling_in');
-  }, [setTotalPercentage, setAllowEditing]);
+  }, [setAllowEditing]);
 
   useEffect(() => {
     loadData();
@@ -109,9 +107,6 @@ export default function PricePage() {
 
   return (
     <>
-      {allowEditing && (
-        <Toolbar className="mt-2 mb-2 p-2 bg-blur" items={toolbarItems} />
-      )}
       <Form {...formConfig} className="mb-1" />
       <PriceItemDefault
         priceID={priceID}
@@ -119,6 +114,9 @@ export default function PricePage() {
         fastFill={fastFill}
         readOnly={!allowEditing}
       />
+      {allowEditing && (
+        <Toolbar className="mt-2 mb-2 p-2 bg-blur" items={toolbarItems} />
+      )}
     </>
   );
 }

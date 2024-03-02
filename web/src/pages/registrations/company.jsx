@@ -1,47 +1,44 @@
 import Company from "../../api/company.js";
-import {Col} from "react-bootstrap";
-import {useMemo} from "react";
+import { useMemo } from "react";
 import Grid from "../../components/Grid.jsx";
-import {requiredField} from "../../utils/require.js";
+import { requiredField } from "../../utils/require.js";
 
 
 const companyModel = new Company();
 const dataSource = companyModel.makeCustomStore();
 export default function CompanyPage() {
-    const gridOptions = useMemo(() => {
-        return {
-            columns: [
-                {dataField: "id", caption: "#"},
-                {dataField: "name", caption: "Nome"},
-                {dataField: "document", caption: "Documento", dataType: "numeric"},
-            ],
-            editing: {
-                popup: {
-                    height: "auto",
-                    width: "600",
-                },
-                form: {
-                    items: [
-                        {
-                            dataField: "name",
-                            colSpan: 3,
-                            validationRules: [requiredField],
-                        },
-                        {
-                            dataField: "document",
-                            colSpan: 1,
-                            validationRules: [requiredField],
-                        },
-                    ],
-                }
-            }
+  const gridOptions = useMemo(() => {
+    return {
+      columns: [
+        { dataField: "id", caption: "#" },
+        { dataField: "name", caption: "Nome" },
+        { dataField: "document", caption: "Documento", dataType: "numeric" },
+      ],
+      editing: {
+        popup: {
+          height: "auto",
+          width: "600",
+        },
+        form: {
+          items: [
+            {
+              dataField: "name",
+              colSpan: 3,
+              validationRules: [requiredField],
+            },
+            {
+              dataField: "document",
+              colSpan: 1,
+              validationRules: [requiredField],
+            },
+          ],
         }
-    }, []);
-    return (
-        <>
-            <Col className="backdrop-blur-sm">
-                <Grid dataSource={dataSource} gridCustom={gridOptions}/>
-            </Col>
-        </>
-    );
+      }
+    }
+  }, []);
+  return (
+    <>
+      <Grid dataSource={dataSource} gridCustom={gridOptions} />
+    </>
+  );
 }

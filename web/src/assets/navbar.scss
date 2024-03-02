@@ -1,0 +1,20 @@
+nav {
+  @apply flex items-center justify-between gap-2 h-14;
+  @apply mb-2;
+
+  ul {
+    @apply flex gap-1;
+
+    li {
+      @apply flex w-full h-full;
+
+      button,
+      a {
+        @apply uppercase h-10 flex justify-center items-center;
+        @apply px-4 py-2;
+        @apply font-thin tracking-tight;
+        @apply hover:bg-black/5 transition-colors;
+      }
+    }
+  }
+}

@@ -17,6 +17,7 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 dj-rest-auth = "*"
 python-dateutil = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 black = "*"

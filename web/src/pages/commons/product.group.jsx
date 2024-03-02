@@ -1,43 +1,40 @@
 import ProductGroup from "../../api/product.group.js";
-import {Col} from "react-bootstrap";
-import {useMemo} from "react";
+import { useMemo } from "react";
 import Grid from "../../components/Grid.jsx";
-import {requiredField} from "../../utils/require.js";
+import { requiredField } from "../../utils/require.js";
 
 
 const productGroupModel = new ProductGroup();
 const dataSource = productGroupModel.makeCustomStore();
 
 export default function ProductGroupPage() {
-    const gridOptions = useMemo(() => {
-        return {
-            columns: [
-                {dataField: "id", caption: "#", visible: false,},
-                {dataField: "erp_code", caption: "Código ERP", width: 150, visible: false},
-                {dataField: "name", caption: "Nome"},
-            ],
-            editing: {
-                popup: {
-                    height: "auto",
-                    width: "400",
-                },
-                form: {
-                    items: [
-                        {
-                            dataField: "name",
-                            colSpan: 4,
-                            validationRules: [requiredField],
-                        },
-                    ],
-                }
-            }
+  const gridOptions = useMemo(() => {
+    return {
+      columns: [
+        { dataField: "id", caption: "#", visible: false, },
+        { dataField: "erp_code", caption: "Código ERP", width: 150, visible: false },
+        { dataField: "name", caption: "Nome" },
+      ],
+      editing: {
+        popup: {
+          height: "auto",
+          width: "400",
+        },
+        form: {
+          items: [
+            {
+              dataField: "name",
+              colSpan: 4,
+              validationRules: [requiredField],
+            },
+          ],
         }
-    }, []);
-    return (
-        <>
-            <Col className="backdrop-blur-sm">
-                <Grid dataSource={dataSource} gridCustom={gridOptions}/>
-            </Col>
-        </>
-    );
+      }
+    }
+  }, []);
+  return (
+    <>
+      <Grid dataSource={dataSource} gridCustom={gridOptions} />
+    </>
+  );
 }

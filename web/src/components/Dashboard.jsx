@@ -1,7 +1,5 @@
 import Price from '../api/price.js';
-
-import { Col } from 'react-bootstrap';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback } from 'react';
 import Grid from '../components/Grid.jsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -91,9 +89,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Col className="backdrop-blur-sm">
-        <Grid dataSource={dataSource} gridCustom={gridOptions} />
-      </Col>
+      <Grid dataSource={dataSource} gridCustom={gridOptions} />
     </>
   );
 }
