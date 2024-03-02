@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('geraldo-token'));
   const [user, setUser] = useState(null);
   const whoami = useCallback(async () => {
     const { data } = await http.get('/auth/user/');
@@ -38,6 +38,7 @@ const AuthProvider = ({ children }) => {
   const { isSuccess, isError, data } = useQuery({
     queryKey: 'whoami',
     queryFn: async () => whoami,
+    enabled: isAuthenticated,
   });
 
   useEffect(() => {

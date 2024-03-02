@@ -29,7 +29,7 @@ const CustomNavbar = () => {
         <li>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
-              <button>Administração</button>
+              <span>Administração</span>
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Content>
@@ -47,7 +47,7 @@ const CustomNavbar = () => {
         <li>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
-              <button>Cadastros</button>
+              <span>Cadastros</span>
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Content>
