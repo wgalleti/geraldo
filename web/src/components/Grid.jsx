@@ -47,7 +47,7 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
       },
       dateSerializationFormat: 'yyyy-MM-dd',
       focusStateEnabled: true,
-      height: '91vh',
+      height: '90vh',
       scrolling: {
         mode: 'infinite',
       },

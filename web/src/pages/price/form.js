@@ -12,106 +12,76 @@ const formConfig = {
   labelLocation: 'top',
   showColonAfterLabel: false,
   showValidationSummary: false,
-  colCount: 3,
   readOnly: true,
+  colCount: 2,
   items: [
     {
-      itemType: 'tabbed',
-      tabPanelOptions: {
-        height: 260,
+      dataField: 'completed_percent',
+      label: { text: 'Preenchimento', visible: false },
+      editorType: 'dxProgressBar',
+      editorOptions: {
+        statusFormat: (ratio) => `Completo: ${ratio * 100}%`
       },
-      colSpan: 3,
-      tabs: [
-        {
-          title: 'Resumo',
-          colCount: 3,
-          colSpan: 3,
-          items: [
-            {
-              dataField: 'payment_refer_name',
-              label: { text: 'Referência para Pagamento' },
-            },
-            {
-              dataField: 'company_name',
-              label: { text: 'Empresa' },
-              colSpan: 3,
-            },
-            { dataField: 'buyer_name', label: { text: 'Comprador' } },
-            {
-              dataField: 'expire_at',
-              label: { text: 'Termina em' },
-              colSpan: 1,
-              editorType: 'dxDateBox',
-              editorOptions: {
-                displayFormat: 'dd/MM/yyyy',
-              },
-            },
-            {
-              dataField: 'items_count',
-              label: { text: 'Itens' },
-              colSpan: 1,
-            },
-            {
-              dataField: 'value_total',
-              label: { text: 'Total' },
-              colSpan: 1,
-              editorType: 'dxNumberBox',
-              editorOptions: {
-                format: {
-                  type: 'fixedPoint',
-                  precision: 2,
-                },
-              },
-            },
-            { dataField: 'duration_time', label: { text: 'Tempo' } },
-            {
-              dataField: 'started_at',
-              label: { text: 'Iniciado em' },
-              editorType: 'dxDateBox',
-              editorOptions: {
-                displayFormat: 'dd/MM/yyyy',
-              },
-            },
-            {
-              dataField: 'expire_at',
-              label: { text: 'Termina em' },
-              editorType: 'dxDateBox',
-              editorOptions: {
-                displayFormat: 'dd/MM/yyyy',
-              },
-            },
-            {
-              dataField: 'completed_percent',
-              label: { text: 'Preenchimento', visible: false },
-              colSpan: 3,
-              editorType: 'dxProgressBar',
-              editorOptions: {},
-            },
-          ],
+      colSpan: 2,
+    },
+    {
+      dataField: 'company_name',
+      label: { text: 'Empresa' },
+      colSpan: 2,
+    },
+    {
+      dataField: 'payment_refer_name',
+      label: { text: 'Referência Forma de Pagamento' },
+      colSpan: 2,
+    },
+    {
+      dataField: 'started_at',
+      label: { text: 'Iniciado em' },
+      editorType: 'dxDateBox',
+      editorOptions: {
+        displayFormat: 'dd/MM/yyyy',
+      },
+    },
+    { dataField: 'buyer_name', label: { text: 'Comprador' }, },
+    {
+      dataField: 'expire_at',
+      label: { text: 'Termina em' },
+      editorType: 'dxDateBox',
+      editorOptions: {
+        displayFormat: 'dd/MM/yyyy',
+      },
+    },
+    { dataField: 'duration_time', label: { text: 'Tempo' } },
+    {
+      dataField: 'items_count',
+      label: { text: 'Itens' },
+    },
+    {
+      dataField: 'value_total',
+      label: { text: 'Total' },
+      editorType: 'dxNumberBox',
+      editorOptions: {
+        format: {
+          type: 'fixedPoint',
+          precision: 2,
         },
-        {
-          title: 'Detalhes',
-          colCount: 3,
-          colSpan: 3,
-          items: [
-            {
-              dataField: 'payment_name',
-              label: { text: 'Forma de Pagamento' },
-            },
-            { dataField: 'status_data', label: { text: 'Status' } },
-            { dataField: 'priority_data', label: { text: 'Prioridade' } },
-            {
-              dataField: 'recommendation',
-              label: { text: 'Recomendações' },
-              colSpan: 3,
-              itemType: 'dxTextArea',
-              editorOptions: {
-                height: 80,
-              },
-            },
-          ],
-        },
-      ],
+      },
+    },
+    {
+      dataField: 'payment_name',
+      label: { text: 'Forma de Pagamento' },
+      colSpan: 2,
+    },
+    { dataField: 'status_data', label: { text: 'Status' }, colSpan: 2, },
+    { dataField: 'priority_data', label: { text: 'Prioridade' }, colSpan: 2, },
+    {
+      dataField: 'recommendation',
+      label: { text: 'Recomendações' },
+      itemType: 'dxTextArea',
+      editorOptions: {
+        height: 80,
+      },
+      colSpan: 2,
     },
   ],
 };

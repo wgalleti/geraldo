@@ -14,8 +14,9 @@ export const columnsConfig = [
       valueExpr: 'id',
     },
     validationRules: [{ type: 'required' }],
+    allowEditing: false,
   },
-  { dataField: 'product_observation', visible: false },
+  { dataField: 'product_observation', visible: false, allowEditing: false, },
   {
     dataField: 'unity',
     caption: 'Unidade',
@@ -25,6 +26,7 @@ export const columnsConfig = [
       valueExpr: 'id',
     },
     validationRules: [{ type: 'required' }],
+    allowEditing: false,
   },
   {
     dataField: 'quantity_refer',
@@ -32,11 +34,13 @@ export const columnsConfig = [
     format: { type: 'fixedPoint', precision: 2 },
     visible: false,
     validationRules: [{ type: 'required' }],
+    allowEditing: false,
   },
   {
     dataField: 'quantity_pending',
     caption: 'Qtd. Pendente',
     format: { type: 'fixedPoint', precision: 2 },
+    allowEditing: false,
   },
   {
     dataField: 'quantity',
@@ -44,8 +48,10 @@ export const columnsConfig = [
     format: { type: 'fixedPoint', precision: 2 },
     setCellValue: (newData, value, currentRowData) => {
       newData.quantity = value;
-      const { unitary } = currentRowData;
+      const { unitary = 0 } = currentRowData;
       newData.subtotal = unitary * value;
+      const { subtotal, tax = 0, shipping = 0, discount = 0, rounding = 0 } = newData;
+      newData.value_total = subtotal + tax + shipping + discount + rounding;
     },
     validationRules: [{ type: 'required' }],
   },
@@ -58,6 +64,8 @@ export const columnsConfig = [
       newData.unitary = value;
       const { quantity } = currentRowData;
       newData.subtotal = quantity * value;
+      const { subtotal, tax = 0, shipping = 0, discount = 0, rounding = 0 } = newData;
+      newData.value_total = subtotal + tax + shipping + discount + rounding;
     },
     validationRules: [{ type: 'required' }],
   },
@@ -67,6 +75,7 @@ export const columnsConfig = [
     format: { type: 'fixedPoint', precision: 2 },
     visible: false,
     validationRules: [{ type: 'required' }],
+    allowEditing: false,
   },
   {
     dataField: 'tax',
@@ -112,6 +121,7 @@ export const columnsConfig = [
     dataField: 'value_total',
     caption: 'Valor Total',
     format: { type: 'fixedPoint', precision: 2 },
+    allowEditing: false,
   },
 ];
 

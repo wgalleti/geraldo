@@ -14,7 +14,7 @@ const PriceItemDefault = ({ priceID, loadData, fastFill, readOnly }) => {
 
   const gridOptions = useMemo(() => {
     return {
-      height: '55vh',
+      height: '85vh',
       onRowUpdated: () => {
         loadData();
       },
@@ -25,6 +25,8 @@ const PriceItemDefault = ({ priceID, loadData, fastFill, readOnly }) => {
         allowUpdating: !readOnly,
         mode: fastFill ? 'batch' : 'popup',
         form: formConfig,
+        selectTextOnEditStart: true,
+        startEditAction: "click",
       },
     };
   }, [loadData, fastFill]);
@@ -44,4 +46,4 @@ PriceItemDefault.defaultProps = {
   readOnly: false,
 };
 
-export default PriceItemDefault;
+export { PriceItemDefault };

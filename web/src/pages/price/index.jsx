@@ -6,12 +6,12 @@ import { useParams } from 'react-router-dom';
 import Price from '../../api/price.js';
 import http from '../../plugins/http';
 import { form, formConfig } from './form';
-import PriceItemDefault from '../../components/PriceItem/Index.jsx';
+import { PriceItemDefault } from '../../components/PriceItem/Index.jsx';
 
 const priceModel = new Price();
 
 export const PricePage = () => {
-  const [fastFill, setFastFill] = useState(false);
+  const [fastFill, setFastFill] = useState(true);
   const [allowEditing, setAllowEditing] = useState(true);
   let { priceID } = useParams();
 
@@ -45,12 +45,13 @@ export const PricePage = () => {
   const toolbarItems = useMemo(() => {
     return [
       {
-        widget: 'dxButton',
+        widget: 'dxCheckBox',
         location: 'before',
         options: {
           icon: 'edit',
-          text: `Preenchimento ${!fastFill ? 'Rápido' : 'Normal'}`,
-          onClick: () => changeFastFill(),
+          text: `Modo Rápido`,
+          value: fastFill,
+          onValueChanged: changeFastFill,
           disabled: !allowEditing,
         },
       },
@@ -59,7 +60,7 @@ export const PricePage = () => {
         location: 'after',
         options: {
           icon: 'close',
-          text: 'Cancelar',
+          text: 'Cancelar Cotação',
           elementAttr: {
             class: 'mr-2 ml-2',
           },
@@ -72,7 +73,7 @@ export const PricePage = () => {
         location: 'after',
         options: {
           icon: 'check',
-          text: 'Finalizar',
+          text: 'Encerrar Cotação',
           onClick: () => onFinish(),
           disabled: !allowEditing,
         },
@@ -106,17 +107,25 @@ export const PricePage = () => {
   }, [loadData]);
 
   return (
-    <>
-      <Form {...formConfig} className="mb-1" />
-      <PriceItemDefault
-        priceID={priceID}
-        loadData={loadData}
-        fastFill={fastFill}
-        readOnly={!allowEditing}
-      />
-      {allowEditing && (
-        <Toolbar className="mt-2 mb-2 p-2 bg-blur" items={toolbarItems} />
-      )}
-    </>
+
+    <div className='flex flex-col h-full'>
+      <div className='w-full '>
+        <Toolbar className="mt-2 mb-2 py-2 bg-blur" items={toolbarItems} disabled={!allowEditing} />
+      </div>
+      <div className='w-full h-full flex flex-col md:flex-row gap-4'>
+        <div className='md:min-w-[250px] w-full'>
+          <Form {...formConfig} className="mb-1" />
+        </div>
+        <div className='w-full'>
+          <PriceItemDefault
+            priceID={priceID}
+            loadData={loadData}
+            fastFill={fastFill}
+            readOnly={!allowEditing}
+          />
+        </div>
+      </div>
+
+    </div>
   );
 }

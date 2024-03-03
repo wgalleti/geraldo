@@ -16,3 +16,7 @@ body {
 .dx-icon::before {
   @apply text-gray-400;
 }
+
+.dx-progressbar-container {
+  @apply h-4;
+}
