@@ -1,0 +1,42 @@
+default_language_version:
+    python: python3.12.2
+
+repos:
+  - repo: https://github.com/ambv/black
+    rev: 24.2.0
+    hooks:
+        - id: black
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+        - id: fix-encoding-pragma
+        - id: trailing-whitespace
+        - id: debug-statements
+        - id: name-tests-test
+        - id: check-json
+        - id: check-merge-conflict
+        - id: check-yaml
+
+  - repo: local
+    hooks:
+      - id: check-collectstatic
+        name: Check if static files need to be collected
+        entry: ./manage.py collectstatic --dry-run --noinput
+        language: system
+        types: [python]
+        pass_filenames: false
+
+#      - id: check-deploy-ready
+#        name: Check if the project is ready to be deployed
+#        entry: ./manage.py check --deploy
+#        language: system
+#        types: [python]
+#        pass_filenames: false
+
+      - id: check-migrations
+        name: Check if the project has unapplied migrations
+        entry: ./manage.py makemigrations --check --dry-run
+        language: system
+        types: [python]
+        pass_filenames: false

@@ -18,6 +18,7 @@ psycopg2-binary = "*"
 dj-rest-auth = "*"
 python-dateutil = "*"
 djangorestframework-simplejwt = "*"
+pre-commit = "*"
 
 [dev-packages]
 black = "*"

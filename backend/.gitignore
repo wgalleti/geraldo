@@ -25,7 +25,6 @@ worker.log
 beat.log
 media/
 __pycache__/
-.pre-commit-config.yaml
 .Python
 *.pyc
 *.pyo
