@@ -20,3 +20,24 @@ body {
 .dx-progressbar-container {
   @apply h-4;
 }
+
+.dx-switch-inner {
+  @apply items-center p-0;
+}
+
+.dx-switch-on,
+.dx-switch-off {
+  @apply uppercase text-sm font-light;
+}
+
+.dx-switch-handle {
+  @apply h-6 rounded-none;
+}
+
+.dx-switch-container {
+  @apply h-6 p-0;
+}
+
+.dx-toolbar {
+  @apply bg-primary;
+}

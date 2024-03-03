@@ -80,6 +80,9 @@ const formConfig = {
       itemType: 'dxTextArea',
       editorOptions: {
         height: 80,
+        inputAttr: {
+          wrap: "soft"
+        }
       },
       colSpan: 2,
     },

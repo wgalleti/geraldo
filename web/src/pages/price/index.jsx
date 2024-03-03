@@ -7,12 +7,14 @@ import Price from '../../api/price.js';
 import http from '../../plugins/http';
 import { form, formConfig } from './form';
 import { PriceItemDefault } from '../../components/PriceItem/Index.jsx';
+import { PriceItemCard } from '../../components/PriceItem/Card.jsx';
 
 const priceModel = new Price();
 
 export const PricePage = () => {
   const [fastFill, setFastFill] = useState(true);
   const [allowEditing, setAllowEditing] = useState(true);
+  const [data, setData] = useState(null);
   let { priceID } = useParams();
 
   const changeFastFill = useCallback(
@@ -45,12 +47,15 @@ export const PricePage = () => {
   const toolbarItems = useMemo(() => {
     return [
       {
-        widget: 'dxCheckBox',
+        widget: 'dxSwitch',
         location: 'before',
         options: {
           icon: 'edit',
-          text: `Modo Rápido`,
+          switchedOffText: `Normal`,
+          switchedOnText: `Rápido`,
+          hint: "Modo de preenchimento",
           value: fastFill,
+          width: '100px',
           onValueChanged: changeFastFill,
           disabled: !allowEditing,
         },
@@ -83,6 +88,7 @@ export const PricePage = () => {
 
   const loadData = useCallback(async () => {
     const { data } = await http.get(`prices/prices/${priceID}/`);
+    setData(data);
     const formData = {
       completed_percent: data.completed_percent,
       payment_refer_name: data.payment_refer_data.name,
@@ -99,8 +105,9 @@ export const PricePage = () => {
       recommendation: data.recommendation,
     };
     form.option('formData', formData);
-    setAllowEditing(data.status == 'filling_in');
-  }, [setAllowEditing]);
+    const allow = ['filling_in', 'waiting'];
+    setAllowEditing(allow.includes(data.status));
+  }, [setAllowEditing, setData]);
 
   useEffect(() => {
     loadData();
@@ -109,14 +116,22 @@ export const PricePage = () => {
   return (
 
     <div className='flex flex-col h-full'>
-      <div className='w-full '>
-        <Toolbar className="mt-2 mb-2 py-2 bg-blur" items={toolbarItems} disabled={!allowEditing} />
-      </div>
+      {allowEditing && (
+        <div className='w-full '>
+          <Toolbar className="mt-2 mb-2 py-2 bg-blur" items={toolbarItems} />
+        </div>
+      )}
       <div className='w-full h-full flex flex-col md:flex-row gap-4'>
-        <div className='md:min-w-[250px] w-full'>
+        <div className='md:min-w-[250px] md:w-1/3 w-full'>
           <Form {...formConfig} className="mb-1" />
         </div>
         <div className='w-full'>
+          <div className='flex flex-wrap gap-4 justify-between my-2'>
+            <PriceItemCard text='valor total' value={data?.value_total} />
+            <PriceItemCard text='itens pendentes' value={data?.items_pending} noDigits />
+            <PriceItemCard text='valor impostos' value={data?.total_tax} />
+            <PriceItemCard text='valor descontos' value={data?.total_discount} />
+          </div>
           <PriceItemDefault
             priceID={priceID}
             loadData={loadData}

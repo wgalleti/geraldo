@@ -14,7 +14,7 @@ const PriceItemDefault = ({ priceID, loadData, fastFill, readOnly }) => {
 
   const gridOptions = useMemo(() => {
     return {
-      height: '85vh',
+      height: '72vh',
       onRowUpdated: () => {
         loadData();
       },

@@ -55,7 +55,6 @@ export const columnsConfig = [
     },
     validationRules: [{ type: 'required' }],
   },
-
   {
     dataField: 'unitary',
     caption: 'Valor Unitário',

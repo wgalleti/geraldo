@@ -47,6 +47,19 @@ class PriceSerializerV1(serializers.ModelSerializer):
     items_count = serializers.IntegerField(
         read_only=True,
     )
+    items_pending = serializers.IntegerField(
+        read_only=True,
+    )
+    total_tax = serializers.DecimalField(
+        read_only=True,
+        max_digits=15,
+        decimal_places=4,
+    )
+    total_discount = serializers.DecimalField(
+        read_only=True,
+        max_digits=15,
+        decimal_places=4,
+    )
     value_total = serializers.DecimalField(
         max_digits=15,
         decimal_places=4,

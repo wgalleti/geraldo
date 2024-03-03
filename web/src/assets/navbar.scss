@@ -12,8 +12,10 @@ nav {
       a {
         @apply uppercase h-10 flex justify-center items-center;
         @apply px-4 py-2;
-        @apply font-thin tracking-tight;
+        @apply font-normal tracking-tight;
         @apply hover:bg-black/5 transition-colors;
+        @apply transform-gpu hover:scale-110;
+        @apply transition-all;
       }
     }
   }

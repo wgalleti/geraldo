@@ -54,6 +54,18 @@ class Price(
         return pending / quantity * 100
 
     @property
+    def items_pending(self):
+        return self.price_items.filter(filled=False).count()
+
+    @property
+    def total_tax(self):
+        return sum(self.price_items.values_list("tax", flat=True))
+
+    @property
+    def total_discount(self):
+        return sum(self.price_items.values_list("discount", flat=True))
+
+    @property
     def items_count(self):
         return self.price_items.count()
 
