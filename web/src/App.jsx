@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { loadMessages, locale } from 'devextreme/localization';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/Auth.jsx';
-import { AppRoutes } from './router/index.jsx';
+import { Router } from './router/Index.jsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +24,7 @@ export default function App() {
       <Toaster />
       <AuthProvider>
         <BrowserRouter>
-          <AppRoutes />
+          <Router />
         </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>

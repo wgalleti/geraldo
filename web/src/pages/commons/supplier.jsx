@@ -7,7 +7,7 @@ import { requiredField } from "../../utils/require.js";
 const supplierModel = new Supplier();
 const dataSource = supplierModel.makeCustomStore();
 
-export default function SupplierPage() {
+export const SupplierPage = () => {
   const gridOptions = useMemo(() => {
     return {
       onInitNewRow: (e) => {

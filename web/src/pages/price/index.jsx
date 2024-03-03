@@ -4,13 +4,13 @@ import { confirm } from 'devextreme/ui/dialog';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Price from '../../api/price.js';
-import PriceItemDefault from '../../components/price-item/Default.jsx';
 import http from '../../plugins/http';
 import { form, formConfig } from './form';
+import PriceItemDefault from '../../components/PriceItem/Index.jsx';
 
 const priceModel = new Price();
 
-export default function PricePage() {
+export const PricePage = () => {
   const [fastFill, setFastFill] = useState(false);
   const [allowEditing, setAllowEditing] = useState(true);
   let { priceID } = useParams();

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
 import { CustomNavbar } from "../components/Navbar"
 
-const BaseLayout = () => {
+export const BaseLayout = () => {
   return (
     <div className="w-full px-2">
       <CustomNavbar />
@@ -9,5 +9,3 @@ const BaseLayout = () => {
     </div>
   )
 }
-
-export { BaseLayout }

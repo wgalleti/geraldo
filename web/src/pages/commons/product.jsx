@@ -12,7 +12,7 @@ const unityModel = new Unity();
 const productPriority = productModel.productPriority();
 const dataSource = productModel.makeCustomStore();
 
-export default function ProductPage() {
+export const ProductPage = () => {
   const gridOptions = useMemo(() => {
     return {
       onInitNewRow: (e) => {

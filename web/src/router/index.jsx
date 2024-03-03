@@ -1,47 +1,47 @@
 import { Route, Routes } from "react-router-dom"
-import BuyerPage from "../pages/commons/buyer"
-import PaymentPage from "../pages/commons/payment"
-import ProductPage from "../pages/commons/product"
-import ProductGroupPage from "../pages/commons/product.group"
-import SupplierPage from "../pages/commons/supplier"
-import UnityPage from "../pages/commons/unity"
-import PriceDetailsPage from "../pages/details"
-import HomePage from "../pages/home"
-import PricePage from "../pages/price"
-import CompanyPage from "../pages/registrations/company"
-import UserPage from "../pages/registrations/user"
-import { Guard } from "./guard"
-import { LoginPage } from "../pages/login"
-import { BaseLayout } from "../layouts/base"
-import { AuthLayout } from "../layouts/auth"
+import {
+  HomePage,
+  LoginPage,
+  PriceDetailsPage,
+  CompanyPage,
+  UserPage,
+  BuyerPage,
+  PaymentPage,
+  ProductPage,
+  ProductGroupPage,
+  SupplierPage,
+  UnityPage,
+  PricePage,
+} from "../pages"
+import { Guard } from "./Guard"
+import { AuthLayout } from "../layouts/Auth"
+import { BaseLayout } from "../layouts/Base"
 
-const AppRoutes = () => {
+const Router = () => {
   return (
     <Routes>
       <Route element={<Guard isPrivate={false} />}>
         <Route element={<AuthLayout />}>
-          <Route exact path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Route>
       </Route>
       <Route element={<Guard isPrivate={true} />}>
         <Route element={<BaseLayout />}>
-          <Route exact path="/" element={<HomePage />} />
-          <Route exact path="/companies" element={<CompanyPage />} />
-          <Route exact path="/users" element={<UserPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/companies" element={<CompanyPage />} />
+          <Route path="/users" element={<UserPage />} />
 
-          <Route exact path="/buyers" element={<BuyerPage />} />
-          <Route exact path="/payments" element={<PaymentPage />} />
+          <Route path="/buyers" element={<BuyerPage />} />
+          <Route path="/payments" element={<PaymentPage />} />
           <Route
-            exact
             path="/product-groups"
             element={<ProductGroupPage />}
           />
-          <Route exact path="/products" element={<ProductPage />} />
-          <Route exact path="/suppliers" element={<SupplierPage />} />
-          <Route exact path="/unities" element={<UnityPage />} />
-          <Route exact path="/prices/:priceID" element={<PricePage />} />
+          <Route path="/products" element={<ProductPage />} />
+          <Route path="/suppliers" element={<SupplierPage />} />
+          <Route path="/unities" element={<UnityPage />} />
+          <Route path="/prices/:priceID" element={<PricePage />} />
           <Route
-            exact
             path="/details/:priceID"
             element={<PriceDetailsPage />}
           />
@@ -51,5 +51,5 @@ const AppRoutes = () => {
   )
 }
 
-export { AppRoutes }
+export { Router }
 

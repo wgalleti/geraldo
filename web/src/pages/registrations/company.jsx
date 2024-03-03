@@ -6,7 +6,7 @@ import { requiredField } from "../../utils/require.js";
 
 const companyModel = new Company();
 const dataSource = companyModel.makeCustomStore();
-export default function CompanyPage() {
+export const CompanyPage = () => {
   const gridOptions = useMemo(() => {
     return {
       columns: [

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/useAuth"
 import PropTypes from "prop-types";
+import { useAuth } from "../hooks/useAuth";
 
 
 const Guard = ({ isPrivate }) => {

@@ -1,9 +1,9 @@
-import { useAuth } from "../context/useAuth";
 import { Logo } from "../components/Logo"
 import { Form } from "devextreme-react";
+import { useAuth } from "../hooks/useAuth";
 import { useRef } from "react";
 
-const LoginPage = () => {
+export const LoginPage = () => {
   const formRef = useRef(null);
   const { login } = useAuth();
   const formConfig = {
@@ -60,5 +60,3 @@ const LoginPage = () => {
     </div>
   )
 }
-
-export { LoginPage }

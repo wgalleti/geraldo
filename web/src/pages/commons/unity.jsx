@@ -7,7 +7,7 @@ import { requiredField } from "../../utils/require.js";
 const unityModel = new Unity();
 const dataSource = unityModel.makeCustomStore();
 
-export default function UnityPage() {
+export const UnityPage = () => {
   const gridOptions = useMemo(() => {
     return {
       columns: [

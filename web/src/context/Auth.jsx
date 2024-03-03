@@ -36,8 +36,8 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const { isSuccess, isError, data } = useQuery({
-    queryKey: 'whoami',
-    queryFn: async () => whoami,
+    queryKey: ['whoami'],
+    queryFn: whoami,
     enabled: isAuthenticated,
   });
 

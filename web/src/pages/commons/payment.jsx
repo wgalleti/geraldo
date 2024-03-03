@@ -8,7 +8,7 @@ import { requiredField } from "../../utils/require.js"
 const paymentModel = new Payment();
 const dataSource = paymentModel.makeCustomStore();
 
-export default function PaymentPage() {
+export const PaymentPage = () => {
   const gridOptions = useMemo(() => {
     return {
       columns: [

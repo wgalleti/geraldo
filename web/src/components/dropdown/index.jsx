@@ -1,7 +1,7 @@
-import { Root } from "./root"
-import { Content } from './content'
-import { Trigger } from './trigger'
-import { Item } from './item'
+import { Root } from "./Root"
+import { Content } from './Content'
+import { Trigger } from './Trigger'
+import { Item } from './Item'
 
 
 export const DropdownMenu = {

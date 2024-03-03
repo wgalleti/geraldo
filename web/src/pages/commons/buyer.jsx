@@ -6,8 +6,7 @@ import { requiredField } from "../../utils/require.js";
 const buyerModel = new Buyer();
 const dataSource = buyerModel.makeCustomStore();
 
-export default function BuyerPage() {
-
+export const BuyerPage = () => {
   const gridOptions = useMemo(() => {
     return {
       columns: [

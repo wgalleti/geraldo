@@ -6,7 +6,7 @@ const requiredField = { type: "required", message: "This field is required" };
 
 const userModel = new User();
 const dataSource = userModel.makeCustomStore();
-export default function UserPage() {
+export const UserPage = () => {
   const gridOptions = useMemo(() => {
     return {
       onInitNewRow: (e) => {

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { DropdownMenu } from "../components/dropdown"
 import { ExitIcon } from "@radix-ui/react-icons";
-import { useAuth } from "../context/useAuth"
 import { Logo } from "../components/Logo";
+import { DropdownMenu } from "../components/DropDown/Index";
+import { useAuth } from "../hooks/useAuth";
 
 
 const CustomNavbar = () => {
