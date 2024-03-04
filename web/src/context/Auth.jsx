@@ -17,8 +17,8 @@ const AuthProvider = ({ children }) => {
   const login = useCallback(async (credentials) => {
     try {
       const { data } = await http.post('/auth/login/', credentials);
-      const { user, access } = data;
-      localStorage.setItem('geraldo-token', access);
+      const { user, token } = data;
+      localStorage.setItem('geraldo-token', token);
       localStorage.setItem('geraldo-user', JSON.stringify(user));
       setIsAuthenticated(true);
 

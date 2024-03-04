@@ -1,7 +1,9 @@
 from dj_rest_auth.models import TokenModel
+from dj_rest_auth.serializers import JWTSerializer
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from base.models import Company, User, Profile
 
@@ -41,22 +43,30 @@ class UserSerializerV1(serializers.ModelSerializer):
         return instance
 
 
-class TokenSerializerV1(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField("_user")
-    token = serializers.SerializerMethodField("_token")
-
-    def _token(self, token: TokenModel):
-        return token.key
-
-    def _user(self, token: TokenModel):
-        return UserSerializerV1(token.user).data
+class TokenUserSerializerV1(UserSerializerV1):
 
     class Meta:
-        model = TokenModel
+        model = User
         fields = (
-            "token",
-            "user",
+            "email",
+            "username",
+            "is_superuser",
+            "is_buyer",
+            "is_supplier",
+            "is_active",
         )
+
+
+class JWTSerializerV1(serializers.Serializer):
+    token = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+
+    def get_token(self, obj):
+        return str(obj.get("access"))
+
+    def get_user(self, obj):
+        user_data = TokenUserSerializerV1(obj["user"], context=self.context).data
+        return user_data
 
 
 class ProfileSerializerV1(serializers.ModelSerializer):

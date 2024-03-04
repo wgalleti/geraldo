@@ -147,16 +147,14 @@ REST_FRAMEWORK = {
 
 REST_AUTH = {
     "USE_JWT": True,
+    "JWT_SERIALIZER": "base.api.v1.serializers.JWTSerializerV1",
+    "USER_DETAILS_SERIALIZER": "base.api.v1.serializers.UserSerializerV1",
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=7),
 }
 
-REST_AUTH_SERIALIZERS = {
-    "TOKEN_SERIALIZER": "base.api.v1.serializers.TokenSerializer",
-    "USER_DETAILS_SERIALIZER": "base.api.v1.serializers.UserSerializer",
-}
 
 REST_USE_JWT = False
 
