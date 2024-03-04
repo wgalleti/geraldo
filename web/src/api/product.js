@@ -21,13 +21,29 @@ export default class Product extends Model {
 
   lookup() {
     return {
+      paginate: true,
+      pageSize: 10,
       store: new CustomStore({
         key: 'id',
+        loadMode: "processed",
+        cacheRawData: true,
         byKey: async key => {
           const { data } = await this.load({ id: key });
           return data[0];
         },
-        load: async () => this.load(),
+        load: async ({ skip, take }) => {
+          const { data } = await this.load({ skip, take });
+          if (skip === undefined) {
+            return {
+              data,
+              totalCount: data.length
+            }
+          }
+          return {
+            data: data.data,
+            totalCount: data.total
+          }
+        },
       }),
     };
   }

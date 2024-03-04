@@ -8,6 +8,7 @@ export const columnsConfig = [
   {
     dataField: 'product',
     caption: 'Produto',
+    calculateDisplayValue: "product_data.name",
     lookup: {
       dataSource: productModel.lookup(),
       displayExpr: 'name',
@@ -20,6 +21,7 @@ export const columnsConfig = [
   {
     dataField: 'unity',
     caption: 'Unidade',
+    calculateDisplayValue: "unity_data.name",
     lookup: {
       dataSource: unityModel.lookup(),
       displayExpr: 'name',

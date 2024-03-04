@@ -7,6 +7,8 @@ from common.api.v1.serializers import (
     BuyerSerializerV1,
     SupplierSerializerV1,
     PaymentSerializerV1,
+    ProductSerializerV1,
+    UnitySerializerV1,
 )
 from price.models import (
     Price,
@@ -15,6 +17,9 @@ from price.models import (
 
 
 class PriceItemSerializerV1(serializers.ModelSerializer):
+    product_data = serializers.SerializerMethodField("_product_data")
+    unity_data = serializers.SerializerMethodField("_unity_data")
+
     quantity_pending = serializers.DecimalField(
         max_digits=15,
         decimal_places=4,
@@ -34,6 +39,12 @@ class PriceItemSerializerV1(serializers.ModelSerializer):
     class Meta:
         model = PriceItem
         fields = "__all__"
+
+    def _product_data(self, obj):
+        return ProductSerializerV1(obj.product).data
+
+    def _unity_data(self, obj):
+        return UnitySerializerV1(obj.unity).data
 
 
 class PriceSerializerV1(serializers.ModelSerializer):
