@@ -43,6 +43,7 @@ export const columnsConfig = [
     caption: 'Qtd. Pendente',
     format: { type: 'fixedPoint', precision: 2 },
     allowEditing: false,
+    hidingPriority: 4,
   },
   {
     dataField: 'quantity',
@@ -87,6 +88,7 @@ export const columnsConfig = [
       const { subtotal, shipping, discount, rounding } = currentRowData;
       newData.value_total = subtotal + value + shipping - discount - rounding;
     },
+    hidingPriority: 3,
   },
   {
     dataField: 'shipping',
@@ -97,6 +99,7 @@ export const columnsConfig = [
       const { subtotal, tax, discount, rounding } = currentRowData;
       newData.value_total = subtotal + tax + value - discount - rounding;
     },
+    hidingPriority: 2,
   },
   {
     dataField: 'discount',
@@ -107,6 +110,7 @@ export const columnsConfig = [
       const { subtotal, tax, shipping, rounding } = currentRowData;
       newData.value_total = subtotal + tax + shipping - value - rounding;
     },
+    hidingPriority: 1,
   },
   {
     dataField: 'rounding',
@@ -117,6 +121,7 @@ export const columnsConfig = [
       const { subtotal, tax, shipping, discount } = currentRowData;
       newData.value_total = subtotal + tax + shipping - discount - value;
     },
+    hidingPriority: 0,
   },
   {
     dataField: 'value_total',

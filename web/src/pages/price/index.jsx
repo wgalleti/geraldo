@@ -127,10 +127,10 @@ export const PricePage = () => {
         </div>
         <div className='w-full'>
           <div className='flex flex-wrap gap-4 justify-between my-2'>
-            <PriceItemCard text='valor total' value={data?.value_total} />
-            <PriceItemCard text='itens pendentes' value={data?.items_pending} noDigits />
-            <PriceItemCard text='valor impostos' value={data?.total_tax} />
-            <PriceItemCard text='valor descontos' value={data?.total_discount} />
+            <PriceItemCard text='Descontos' value={data?.total_discount} />
+            <PriceItemCard text='Pendentes' value={data?.items_pending} noDigits />
+            <PriceItemCard text='Impostos' value={data?.total_tax} />
+            <PriceItemCard text='Total' value={data?.value_total} highlight/>
           </div>
           <PriceItemDefault
             priceID={priceID}

@@ -19,6 +19,7 @@ const PriceItemDefault = ({ priceID, loadData, fastFill, readOnly }) => {
         loadData();
       },
       columns: columnsConfig,
+      columnHidingEnabled: true,
       editing: {
         allowAdding: false,
         allowDeleting: false,
