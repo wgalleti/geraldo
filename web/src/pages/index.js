@@ -10,8 +10,8 @@ import { UnityPage } from './Commons/Unity'
 
 import { PricePage } from './Price/Index'
 
-import { HomePage } from './Home'
-import { LoginPage } from './Login'
+import { HomePage } from './Home.jsx'
+import { LoginPage } from './Login.jsx'
 import { PriceDetailsPage } from './Details'
 
 export {
