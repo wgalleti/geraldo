@@ -1,16 +1,16 @@
-import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
-import PropTypes from "prop-types";
+import * as RadixDropdownMenu from '@radix-ui/react-dropdown-menu'
+import PropTypes from 'prop-types'
 
 const Trigger = ({ children }) => {
   return (
-    <RadixDropdownMenu.Trigger className="outline-none">
+    <RadixDropdownMenu.Trigger className='outline-none'>
       {children}
     </RadixDropdownMenu.Trigger>
-  );
-};
+  )
+}
 
 Trigger.propTypes = {
-  children: PropTypes.any,
+  children: PropTypes.any
 }
 
 export { Trigger }

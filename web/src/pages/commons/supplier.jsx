@@ -1,71 +1,69 @@
-import Supplier from "../../api/supplier.js";
-import { useMemo } from "react";
-import Grid from "../../components/Grid.jsx";
-import { requiredField } from "../../utils/require.js";
+import Supplier from '../../api/supplier.js'
+import { useMemo } from 'react'
+import Grid from '../../components/Grid.jsx'
+import { requiredField } from '../../utils/require.js'
 
-
-const supplierModel = new Supplier();
-const dataSource = supplierModel.makeCustomStore();
+const supplierModel = new Supplier()
+const dataSource = supplierModel.makeCustomStore()
 
 export const SupplierPage = () => {
   const gridOptions = useMemo(() => {
     return {
       onInitNewRow: (e) => {
-        e.data.rating = 3;
+        e.data.rating = 3
       },
       columns: [
-        { dataField: "id", caption: "#", visible: false },
-        { dataField: "erp_code", caption: "Código ERP", visible: false },
-        { dataField: "name", caption: "Nome" },
-        { dataField: "alias", caption: "Apelido" },
-        { dataField: "document", caption: "Documento" },
-        { dataField: "email", caption: "Email" },
-        { dataField: "rating", caption: "Classificação", dataType: "number" },
+        { dataField: 'id', caption: '#', visible: false },
+        { dataField: 'erp_code', caption: 'Código ERP', visible: false },
+        { dataField: 'name', caption: 'Nome' },
+        { dataField: 'alias', caption: 'Apelido' },
+        { dataField: 'document', caption: 'Documento' },
+        { dataField: 'email', caption: 'Email' },
+        { dataField: 'rating', caption: 'Classificação', dataType: 'number' }
       ],
       editing: {
         form: {
           colCount: 4,
           items: [
             {
-              dataField: "name",
+              dataField: 'name',
               colSpan: 3,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "alias",
+              dataField: 'alias',
               colSpan: 1,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "document",
+              dataField: 'document',
               colSpan: 1,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "email",
+              dataField: 'email',
               colSpan: 2,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "rating",
+              dataField: 'rating',
               colSpan: 1,
               validationRules: [requiredField],
               editorOptions: {
                 min: 0,
                 max: 5,
-                showSpinButtons: true,
+                showSpinButtons: true
               }
-            },
-          ],
+            }
+          ]
         }
       }
     }
-  }, []);
-
+  }, [])
 
   return (
     <>
       <Grid dataSource={dataSource} gridCustom={gridOptions} />
     </>
-  );
+  )
 }

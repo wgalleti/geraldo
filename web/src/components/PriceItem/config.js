@@ -1,34 +1,34 @@
-import Product from '../../api/product.js';
-import Unity from '../../api/unity.js';
+import Product from '../../api/product.js'
+import Unity from '../../api/unity.js'
 
-const productModel = new Product();
-const unityModel = new Unity();
+const productModel = new Product()
+const unityModel = new Unity()
 
 export const columnsConfig = [
   {
     dataField: 'product',
     caption: 'Produto',
-    calculateDisplayValue: "product_data.name",
+    calculateDisplayValue: 'product_data.name',
     lookup: {
       dataSource: productModel.lookup(),
       displayExpr: 'name',
-      valueExpr: 'id',
+      valueExpr: 'id'
     },
     validationRules: [{ type: 'required' }],
-    allowEditing: false,
+    allowEditing: false
   },
-  { dataField: 'product_observation', visible: false, allowEditing: false, },
+  { dataField: 'product_observation', visible: false, allowEditing: false },
   {
     dataField: 'unity',
     caption: 'Unidade',
-    calculateDisplayValue: "unity_data.name",
+    calculateDisplayValue: 'unity_data.name',
     lookup: {
       dataSource: unityModel.lookup(),
       displayExpr: 'name',
-      valueExpr: 'id',
+      valueExpr: 'id'
     },
     validationRules: [{ type: 'required' }],
-    allowEditing: false,
+    allowEditing: false
   },
   {
     dataField: 'quantity_refer',
@@ -36,40 +36,52 @@ export const columnsConfig = [
     format: { type: 'fixedPoint', precision: 2 },
     visible: false,
     validationRules: [{ type: 'required' }],
-    allowEditing: false,
+    allowEditing: false
   },
   {
     dataField: 'quantity_pending',
     caption: 'Qtd. Pendente',
     format: { type: 'fixedPoint', precision: 2 },
     allowEditing: false,
-    hidingPriority: 4,
+    hidingPriority: 4
   },
   {
     dataField: 'quantity',
     caption: 'Quantidade',
     format: { type: 'fixedPoint', precision: 2 },
     setCellValue: (newData, value, currentRowData) => {
-      newData.quantity = value;
-      const { unitary = 0 } = currentRowData;
-      newData.subtotal = unitary * value;
-      const { subtotal, tax = 0, shipping = 0, discount = 0, rounding = 0 } = newData;
-      newData.value_total = subtotal + tax + shipping + discount + rounding;
+      newData.quantity = value
+      const { unitary = 0 } = currentRowData
+      newData.subtotal = unitary * value
+      const {
+        subtotal,
+        tax = 0,
+        shipping = 0,
+        discount = 0,
+        rounding = 0
+      } = newData
+      newData.value_total = subtotal + tax + shipping + discount + rounding
     },
-    validationRules: [{ type: 'required' }],
+    validationRules: [{ type: 'required' }]
   },
   {
     dataField: 'unitary',
     caption: 'Valor Unitário',
     format: { type: 'fixedPoint', precision: 2 },
     setCellValue: (newData, value, currentRowData) => {
-      newData.unitary = value;
-      const { quantity } = currentRowData;
-      newData.subtotal = quantity * value;
-      const { subtotal, tax = 0, shipping = 0, discount = 0, rounding = 0 } = newData;
-      newData.value_total = subtotal + tax + shipping + discount + rounding;
+      newData.unitary = value
+      const { quantity } = currentRowData
+      newData.subtotal = quantity * value
+      const {
+        subtotal,
+        tax = 0,
+        shipping = 0,
+        discount = 0,
+        rounding = 0
+      } = newData
+      newData.value_total = subtotal + tax + shipping + discount + rounding
     },
-    validationRules: [{ type: 'required' }],
+    validationRules: [{ type: 'required' }]
   },
   {
     dataField: 'subtotal',
@@ -77,59 +89,59 @@ export const columnsConfig = [
     format: { type: 'fixedPoint', precision: 2 },
     visible: false,
     validationRules: [{ type: 'required' }],
-    allowEditing: false,
+    allowEditing: false
   },
   {
     dataField: 'tax',
     caption: 'Imposto',
     format: { type: 'fixedPoint', precision: 2 },
     setCellValue: (newData, value, currentRowData) => {
-      newData.tax = value;
-      const { subtotal, shipping, discount, rounding } = currentRowData;
-      newData.value_total = subtotal + value + shipping - discount - rounding;
+      newData.tax = value
+      const { subtotal, shipping, discount, rounding } = currentRowData
+      newData.value_total = subtotal + value + shipping - discount - rounding
     },
-    hidingPriority: 3,
+    hidingPriority: 3
   },
   {
     dataField: 'shipping',
     caption: 'Frete',
     format: { type: 'fixedPoint', precision: 2 },
     setCellValue: (newData, value, currentRowData) => {
-      newData.shipping = value;
-      const { subtotal, tax, discount, rounding } = currentRowData;
-      newData.value_total = subtotal + tax + value - discount - rounding;
+      newData.shipping = value
+      const { subtotal, tax, discount, rounding } = currentRowData
+      newData.value_total = subtotal + tax + value - discount - rounding
     },
-    hidingPriority: 2,
+    hidingPriority: 2
   },
   {
     dataField: 'discount',
     caption: 'Desconto',
     format: { type: 'fixedPoint', precision: 2 },
     setCellValue: (newData, value, currentRowData) => {
-      newData.discount = value;
-      const { subtotal, tax, shipping, rounding } = currentRowData;
-      newData.value_total = subtotal + tax + shipping - value - rounding;
+      newData.discount = value
+      const { subtotal, tax, shipping, rounding } = currentRowData
+      newData.value_total = subtotal + tax + shipping - value - rounding
     },
-    hidingPriority: 1,
+    hidingPriority: 1
   },
   {
     dataField: 'rounding',
     caption: 'Arredondamento',
     format: { type: 'fixedPoint', precision: 2 },
     setCellValue: (newData, value, currentRowData) => {
-      newData.rounding = value;
-      const { subtotal, tax, shipping, discount } = currentRowData;
-      newData.value_total = subtotal + tax + shipping - discount - value;
+      newData.rounding = value
+      const { subtotal, tax, shipping, discount } = currentRowData
+      newData.value_total = subtotal + tax + shipping - discount - value
     },
-    hidingPriority: 0,
+    hidingPriority: 0
   },
   {
     dataField: 'value_total',
     caption: 'Valor Total',
     format: { type: 'fixedPoint', precision: 2 },
-    allowEditing: false,
-  },
-];
+    allowEditing: false
+  }
+]
 
 export const formConfig = {
   colCount: 7,
@@ -146,9 +158,9 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           dataField: 'unitary',
@@ -156,9 +168,9 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           dataField: 'subtotal',
@@ -167,13 +179,13 @@ export const formConfig = {
             readOnly: true,
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           itemType: 'empty',
-          colSpan: 2,
+          colSpan: 2
         },
         {
           dataField: 'discount',
@@ -181,9 +193,9 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           dataField: 'tax',
@@ -191,9 +203,9 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           dataField: 'shipping',
@@ -201,9 +213,9 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           dataField: 'rounding',
@@ -211,9 +223,9 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           dataField: 'value_total',
@@ -222,19 +234,19 @@ export const formConfig = {
             readOnly: true,
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           colSpan: 5,
           dataField: 'supplier_observation',
           editorType: 'dxTextArea',
           editorOptions: {
-            height: 100,
-          },
-        },
-      ],
+            height: 100
+          }
+        }
+      ]
     },
     {
       itemType: 'group',
@@ -246,10 +258,10 @@ export const formConfig = {
         {
           colSpan: 4,
           dataField: 'product',
-          disabled: true,
+          disabled: true
         },
         {
-          dataField: 'unity',
+          dataField: 'unity'
         },
         {
           dataField: 'quantity_refer',
@@ -257,9 +269,9 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           dataField: 'quantity_pending',
@@ -267,19 +279,19 @@ export const formConfig = {
           editorOptions: {
             format: {
               type: 'fixedPoint',
-              precision: 2,
-            },
-          },
+              precision: 2
+            }
+          }
         },
         {
           colSpan: 7,
           dataField: 'product_observation',
           editorType: 'dxTextArea',
           editorOptions: {
-            height: 100,
-          },
-        },
-      ],
-    },
-  ],
-};
+            height: 100
+          }
+        }
+      ]
+    }
+  ]
+}

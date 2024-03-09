@@ -1,100 +1,99 @@
-import Product from "../../api/product.js";
-import ProductGroup from "../../api/product.group.js";
-import Unity from "../../api/unity.js";
-import { useMemo } from "react";
-import Grid from "../../components/Grid.jsx";
-import { requiredField } from "../../utils/require.js";
+import Product from '../../api/product.js'
+import ProductGroup from '../../api/product.group.js'
+import Unity from '../../api/unity.js'
+import { useMemo } from 'react'
+import Grid from '../../components/Grid.jsx'
+import { requiredField } from '../../utils/require.js'
 
-
-const productModel = new Product();
-const productGroupModel = new ProductGroup();
-const unityModel = new Unity();
-const productPriority = productModel.productPriority();
-const dataSource = productModel.makeCustomStore();
+const productModel = new Product()
+const productGroupModel = new ProductGroup()
+const unityModel = new Unity()
+const productPriority = productModel.productPriority()
+const dataSource = productModel.makeCustomStore()
 
 export const ProductPage = () => {
   const gridOptions = useMemo(() => {
     return {
       onInitNewRow: (e) => {
-        e.data.priority = "normal";
+        e.data.priority = 'normal'
       },
       columns: [
-        { dataField: "id", caption: "#", width: 50, visible: false },
-        { dataField: "erp_code", caption: "Código ERP", visible: false },
+        { dataField: 'id', caption: '#', width: 50, visible: false },
+        { dataField: 'erp_code', caption: 'Código ERP', visible: false },
         {
-          dataField: "product_group",
+          dataField: 'product_group',
           lookup: {
             dataSource: productGroupModel.lookup(),
-            displayExpr: "name",
-            valueExpr: "id",
+            displayExpr: 'name',
+            valueExpr: 'id'
           },
-          caption: "Grupo",
+          caption: 'Grupo'
         },
         {
-          dataField: "unity",
+          dataField: 'unity',
           lookup: {
             dataSource: unityModel.lookup(),
-            displayExpr: "name",
-            valueExpr: "id",
+            displayExpr: 'name',
+            valueExpr: 'id'
           },
-          caption: "Unidade",
+          caption: 'Unidade'
         },
-        { dataField: "name", caption: "Nome" },
-        { dataField: "base_code", caption: "Código Base", visible: false },
-        { dataField: "bar_code", caption: "Código de Barras" },
+        { dataField: 'name', caption: 'Nome' },
+        { dataField: 'base_code', caption: 'Código Base', visible: false },
+        { dataField: 'bar_code', caption: 'Código de Barras' },
         {
-          dataField: "priority",
-          caption: "Prioridade",
+          dataField: 'priority',
+          caption: 'Prioridade',
           lookup: {
-            displayExpr: "name",
-            valueExpr: "id",
-            dataSource: productPriority,
+            displayExpr: 'name',
+            valueExpr: 'id',
+            dataSource: productPriority
           },
-          visible: false,
-        },
+          visible: false
+        }
       ],
       editing: {
         form: {
           colCount: 4,
           items: [
             {
-              dataField: "name",
+              dataField: 'name',
               colSpan: 3,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "base_code",
+              dataField: 'base_code',
               colSpan: 1,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "product_group",
+              dataField: 'product_group',
               colSpan: 1,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "unity",
+              dataField: 'unity',
               colSpan: 1,
-              validationRules: [requiredField],
+              validationRules: [requiredField]
             },
             {
-              dataField: "bar_code",
-              colSpan: 1,
+              dataField: 'bar_code',
+              colSpan: 1
             },
             {
-              dataField: "priority",
+              dataField: 'priority',
               colSpan: 1,
-              validationRules: [requiredField],
-            },
-          ],
+              validationRules: [requiredField]
+            }
+          ]
         }
       }
     }
-  }, []);
+  }, [])
 
   return (
     <>
       <Grid dataSource={dataSource} gridCustom={gridOptions} />
     </>
-  );
+  )
 }

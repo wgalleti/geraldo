@@ -1,5 +1,5 @@
-import * as RadixDropdownMenu from "@radix-ui/react-dropdown-menu";
-import PropTypes from "prop-types";
+import * as RadixDropdownMenu from '@radix-ui/react-dropdown-menu'
+import PropTypes from 'prop-types'
 
 const Content = ({ children, className }) => {
   return (
@@ -10,12 +10,12 @@ const Content = ({ children, className }) => {
         {children}
       </RadixDropdownMenu.Content>
     </RadixDropdownMenu.Portal>
-  );
-};
+  )
+}
 
 Content.propTypes = {
   children: PropTypes.any,
-  className: PropTypes.string,
+  className: PropTypes.string
 }
 
 export { Content }

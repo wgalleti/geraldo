@@ -1,21 +1,21 @@
-import Model from '../plugins/model';
-import CustomStore from 'devextreme/data/custom_store';
+import Model from '../plugins/model'
+import CustomStore from 'devextreme/data/custom_store'
 
 export default class ProductGroup extends Model {
   constructor() {
-    super('commons/product-groups/');
+    super('commons/product-groups/')
   }
 
   lookup() {
     return {
       store: new CustomStore({
         key: 'id',
-        byKey: async key => {
-          const { data } = await this.load({ id: key });
-          return data[0];
+        byKey: async (key) => {
+          const { data } = await this.load({ id: key })
+          return data[0]
         },
-        load: () => this.load(),
-      }),
-    };
+        load: () => this.load()
+      })
+    }
   }
 }

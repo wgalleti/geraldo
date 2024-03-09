@@ -1,25 +1,25 @@
-import Price from '../api/price.js';
-import { useCallback } from 'react';
-import Grid from '../components/Grid.jsx';
-import { useNavigate } from 'react-router-dom';
+import Price from '../api/price.js'
+import { useCallback } from 'react'
+import Grid from '../components/Grid.jsx'
+import { useNavigate } from 'react-router-dom'
 
-const priceModel = new Price();
-const dataSource = priceModel.makeCustomStore();
+const priceModel = new Price()
+const dataSource = priceModel.makeCustomStore()
 
 export default function Dashboard() {
-  let grid;
-  const navigate = useNavigate();
+  let grid
+  const navigate = useNavigate()
 
   const goToPrice = useCallback(() => {
-    const data = grid.getSelectedRowsData();
-    if (data.length == 0) return;
-    const { id } = data[0];
-    navigate(`/prices/${id}`);
-  }, []);
+    const data = grid.getSelectedRowsData()
+    if (data.length == 0) return
+    const { id } = data[0]
+    navigate(`/prices/${id}`)
+  }, [])
 
   const gridOptions = {
-    onContentReady: e => {
-      grid = e.component;
+    onContentReady: (e) => {
+      grid = e.component
     },
     toolbar: {
       items: [
@@ -30,9 +30,9 @@ export default function Dashboard() {
             icon: 'edit',
             text: 'Definir preço',
             onClick: () => {
-              goToPrice();
-            },
-          },
+              goToPrice()
+            }
+          }
         },
         {
           widget: 'dxButton',
@@ -41,11 +41,11 @@ export default function Dashboard() {
             icon: 'print',
             text: 'Detalhes',
             onClick: () => {
-              console.log('details');
-            },
-          },
-        },
-      ],
+              console.log('details')
+            }
+          }
+        }
+      ]
     },
     columns: [
       { dataField: 'company_data.name', caption: 'Empresa' },
@@ -59,7 +59,7 @@ export default function Dashboard() {
       {
         dataField: 'payment_refer',
         caption: 'Forma de Pagamento',
-        visible: false,
+        visible: false
       },
       { dataField: 'payment_refer_data.name', caption: 'Forma de Pagamento' },
       {
@@ -67,8 +67,8 @@ export default function Dashboard() {
         caption: 'Itens',
         format: {
           type: 'fixedPoint',
-          precision: 0,
-        },
+          precision: 0
+        }
       },
       { dataField: 'completed_percent', caption: '% Completo' },
       {
@@ -76,20 +76,20 @@ export default function Dashboard() {
         caption: 'Total',
         format: {
           type: 'fixedPoint',
-          precision: 2,
-        },
-      },
+          precision: 2
+        }
+      }
     ],
     editing: {
       allowAdding: false,
       allowUpdating: false,
-      allowDeleting: false,
-    },
-  };
+      allowDeleting: false
+    }
+  }
 
   return (
     <>
       <Grid dataSource={dataSource} gridCustom={gridOptions} />
     </>
-  );
+  )
 }

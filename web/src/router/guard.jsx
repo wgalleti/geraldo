@@ -1,25 +1,23 @@
-import { Navigate, Outlet } from "react-router-dom";
-import PropTypes from "prop-types";
-import { useAuth } from "../hooks/useAuth";
-
+import { Navigate, Outlet } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { useAuth } from '../hooks/useAuth'
 
 const Guard = ({ isPrivate }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth()
 
   if (!isAuthenticated && isPrivate) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to='/login' replace />
   }
 
   if (isAuthenticated && !isPrivate) {
-    return <Navigate to="/" replace />;
+    return <Navigate to='/' replace />
   }
 
-  return <Outlet />;
-
+  return <Outlet />
 }
 
 Guard.propTypes = {
-  isPrivate: PropTypes.bool,
+  isPrivate: PropTypes.bool
 }
 
 export { Guard }

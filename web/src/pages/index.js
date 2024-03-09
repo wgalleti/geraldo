@@ -1,18 +1,18 @@
-import { CompanyPage } from "./Registrations/Company"
-import { UserPage } from "./Registrations/User"
+import { CompanyPage } from './Registrations/Company'
+import { UserPage } from './Registrations/User'
 
-import { BuyerPage } from "./Commons/Buyer"
-import { PaymentPage } from "./Commons/Payment"
-import { ProductPage } from "./Commons/Product"
-import { ProductGroupPage } from "./Commons/ProductGroup"
-import { SupplierPage } from "./Commons/Supplier"
-import { UnityPage } from "./Commons/Unity"
+import { BuyerPage } from './Commons/Buyer'
+import { PaymentPage } from './Commons/Payment'
+import { ProductPage } from './Commons/Product'
+import { ProductGroupPage } from './Commons/ProductGroup'
+import { SupplierPage } from './Commons/Supplier'
+import { UnityPage } from './Commons/Unity'
 
-import { PricePage } from "./Price/Index"
+import { PricePage } from './Price/Index'
 
-import { HomePage } from "./Home"
-import { LoginPage } from "./Login"
-import { PriceDetailsPage } from "./Details"
+import { HomePage } from './Home'
+import { LoginPage } from './Login'
+import { PriceDetailsPage } from './Details'
 
 export {
   HomePage,
@@ -26,5 +26,5 @@ export {
   ProductGroupPage,
   SupplierPage,
   UnityPage,
-  PricePage,
+  PricePage
 }

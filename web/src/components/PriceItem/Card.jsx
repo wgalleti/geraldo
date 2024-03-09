@@ -1,31 +1,39 @@
-import PropTypes from "prop-types";
-import { formatCurrency } from "../../utils/format";
-import {cn} from "../../utils/classname.js";
+import PropTypes from 'prop-types'
+import { formatCurrency } from '../../utils/format'
+import { cn } from '../../utils/classname.js'
 
 const PriceItemCard = ({ value, text, noDigits, highlight, negative }) => {
   return (
-    <div className={cn(
-      'flex flex-col h-20 min-w-48 flex-1',
-      'border border-gray-700 border-dashed',
-      'justify-between items-center',
-      'px-4 py-2 rounded-lg truncate overflow-hidden text-ellipsis',
-      'text-gray-400',
-      'hover:border-purple-500 transition-all duration-300 ease-in-out',
-      'cursor-pointer',
-      negative && 'text-rose-400'
-    )}>
-      <span className={cn(
-        'text-3xl font-thin tracking-tighter',
-        highlight && 'font-bold',
-      )}>{formatCurrency(value, noDigits)}</span>
-      <strong className='antialiased text-sm tracking-tighter text-gray-500 font-thin hover:text-purple-500 '>{text}</strong>
+    <div
+      className={cn(
+        'flex flex-col h-20 min-w-48 flex-1',
+        'border border-gray-700 border-dashed',
+        'justify-between items-center',
+        'px-4 py-2 rounded-lg truncate overflow-hidden text-ellipsis',
+        'text-gray-400',
+        'hover:border-purple-500 transition-all duration-300 ease-in-out',
+        'cursor-pointer',
+        negative && 'text-rose-400'
+      )}
+    >
+      <span
+        className={cn(
+          'text-3xl font-thin tracking-tighter',
+          highlight && 'font-bold'
+        )}
+      >
+        {formatCurrency(value, noDigits)}
+      </span>
+      <strong className='antialiased text-sm tracking-tighter text-gray-500 font-thin hover:text-purple-500 '>
+        {text}
+      </strong>
     </div>
   )
 }
 PriceItemCard.defaultProps = {
   noDigits: false,
   highlight: false,
-  negative: false,
+  negative: false
 }
 
 PriceItemCard.propTypes = {
@@ -33,7 +41,7 @@ PriceItemCard.propTypes = {
   text: PropTypes.string.isRequired,
   noDigits: PropTypes.bool,
   highlight: PropTypes.bool,
-  negative: PropTypes.bool,
+  negative: PropTypes.bool
 }
 
-export { PriceItemCard };
+export { PriceItemCard }

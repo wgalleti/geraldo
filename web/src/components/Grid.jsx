@@ -1,12 +1,12 @@
-import { useMemo, useRef } from 'react';
-import { DataGrid } from 'devextreme-react';
-import { merge } from 'lodash';
-import PropTypes from 'prop-types';
+import { useMemo, useRef } from 'react'
+import { DataGrid } from 'devextreme-react'
+import { merge } from 'lodash'
+import PropTypes from 'prop-types'
 
 const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
-  const grid = useRef();
+  const grid = useRef()
   const gridConfig = useMemo(() => {
-    const itemsToolbar = gridCustom?.toolbar?.items || [];
+    const itemsToolbar = gridCustom?.toolbar?.items || []
 
     const itemsBaseToolbar = [
       'searchPanel',
@@ -19,37 +19,37 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
         options: {
           icon: 'refresh',
           onClick: () => {
-            grid.current.instance.refresh();
-          },
-        },
-      },
-    ];
+            grid.current.instance.refresh()
+          }
+        }
+      }
+    ]
 
     let base = {
       searchPanel: {
         visible: true,
         searchVisibleColumnsOnly: true,
-        width: 300,
+        width: 300
       },
       loadPanel: {
         enabled: false,
         shading: true,
-        shadingColor: 'rgba(255,255,255, 0.7)',
+        shadingColor: 'rgba(255,255,255, 0.7)'
       },
       columnFixing: {
-        enable: true,
+        enable: true
       },
       columnChooser: {
         enabled: true,
         height: 260,
         mode: 'dragAndDrop',
-        width: 250,
+        width: 250
       },
       dateSerializationFormat: 'yyyy-MM-dd',
       focusStateEnabled: true,
       height: '90vh',
       scrolling: {
-        mode: 'infinite',
+        mode: 'infinite'
       },
       editing: {
         refreshMode: 'reshape',
@@ -63,7 +63,7 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
           width: '80%',
           showTitle: title,
           title: title,
-          shadingColor: 'rgba(0,0,0, 0.7)',
+          shadingColor: 'rgba(0,0,0, 0.7)'
         },
         form: {
           focusStateEnabled: true,
@@ -74,12 +74,12 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
           labelLocation: 'top',
           showColonAfterLabel: false,
           showValidationSummary: false,
-          colCount: 4,
-        },
+          colCount: 4
+        }
       },
       remoteOperations: {
         filtering: true,
-        paging: true,
+        paging: true
       },
       allowColumnReordering: true,
       showBorders: false,
@@ -89,32 +89,32 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
       columnAutoWidth: true,
       allowColumnResizing: true,
       selection: {
-        mode: 'single',
+        mode: 'single'
       },
       paging: {
-        pageSize: 10,
-      },
-    };
+        pageSize: 10
+      }
+    }
 
-    const merged_data = merge(base, gridCustom);
+    const merged_data = merge(base, gridCustom)
     merged_data.toolbar = {
-      items: [...itemsBaseToolbar, ...itemsToolbar],
-    };
+      items: [...itemsBaseToolbar, ...itemsToolbar]
+    }
 
-    return merged_data;
-  }, [gridCustom, title]);
+    return merged_data
+  }, [gridCustom, title])
 
   return (
     <div>
       <DataGrid dataSource={dataSource} {...gridConfig} ref={grid} />
     </div>
-  );
-};
+  )
+}
 
 Grid.propTypes = {
   dataSource: PropTypes.object.isRequired,
   gridCustom: PropTypes.object,
-  title: PropTypes.string,
-};
+  title: PropTypes.string
+}
 
-export default Grid;
+export default Grid
