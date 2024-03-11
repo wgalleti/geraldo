@@ -13,8 +13,9 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const whoami = useCallback(async () => {
     const { data } = await http.get('/auth/user/')
+    setUser(data)
     return data
-  }, [])
+  }, [setUser])
 
   const login = useCallback(async (credentials) => {
     try {
