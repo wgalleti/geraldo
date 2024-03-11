@@ -35,11 +35,15 @@ class Price(
         blank=True,
         verbose_name=_("Payment"),
     )
-
     supplier = models.ForeignKey(
         "common.Supplier",
         on_delete=models.DO_NOTHING,
         verbose_name=_("Supplier"),
+    )
+    supplier_email = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name=_("Supplier email denormalized"),
     )
 
     @property
@@ -75,6 +79,15 @@ class Price(
 
     def __str__(self):
         return f"{self.pk}-{self.erp_code}"
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+
+        # Denormalize data
+        self.supplier_email = getattr(self.supplier, "email", None)
+        self.buyer_email = getattr(self.buyer, "email", None)
+
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = _("Price")
@@ -150,6 +163,16 @@ class PriceItem(
         default=False,
         verbose_name=_("Filled"),
     )
+    buyer_email = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name=_("Buyer email denormalized"),
+    )
+    supplier_email = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name=_("Supplier email denormalized"),
+    )
 
     @property
     def quantity_pending(self):
@@ -168,6 +191,11 @@ class PriceItem(
 
     def save(self, *args, **kwargs):
         self.filled = self.quantity == self.quantity_refer
+
+        # Denormalize data
+        self.buyer_email = self.price.buyer_email
+        self.supplier_email = self.price.supplier_email
+
         super().save(*args, **kwargs)
 
     class Meta:

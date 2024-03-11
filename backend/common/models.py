@@ -119,6 +119,10 @@ class Buyer(UUIDIDMixin, BaseERPCodeMixin):
         verbose_name=_("Email"),
     )
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.erp_code}-{self.name}"
 

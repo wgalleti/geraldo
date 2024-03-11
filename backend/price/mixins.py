@@ -16,6 +16,11 @@ class PriceBuyerDataMixin(models.Model):
         on_delete=models.DO_NOTHING,
         verbose_name=_("Buyer"),
     )
+    buyer_email = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name=_("Buyer email denormalized"),
+    )
     started_at = models.DateField(
         verbose_name=_("Started at"),
     )
