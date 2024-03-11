@@ -1,6 +1,6 @@
 import http from './http'
 import CustomStore from 'devextreme/data/custom_store'
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast'
 
 export default class Model {
   constructor(resource, keyField = 'id', filter = {}) {
@@ -44,7 +44,8 @@ export default class Model {
       const { data } = await this.http.post(this.resource, item)
       return data
     } catch (e) {
-      const message = e.response && e.response.data ? e.response.data : e.message
+      const message =
+        e.response && e.response.data ? e.response.data : e.message
       console.error(message)
 
       if (message?.detail) {

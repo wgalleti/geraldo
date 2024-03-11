@@ -113,8 +113,8 @@ export const PricePage = () => {
       const allow = ['filling_in', 'waiting']
       setAllowEditing(allow.includes(data.status))
     } catch (error) {
-      toast.error("Cotação não localizada.")
-      navigate("/")
+      toast.error('Cotação não localizada.')
+      navigate('/')
     }
   }, [setAllowEditing, setData])
 
@@ -136,14 +136,14 @@ export const PricePage = () => {
         <div className='w-full'>
           {data && (
             <div className='flex flex-wrap gap-4 justify-between my-2'>
-              <PriceItemCard text='Descontos' value={data?.total_discount}/>
+              <PriceItemCard text='Descontos' value={data?.total_discount} />
               <PriceItemCard
                 text='Pendentes'
                 value={data?.items_pending}
                 noDigits
               />
-              <PriceItemCard text='Impostos' value={data?.total_tax}/>
-              <PriceItemCard text='Total' value={data?.value_total} highlight/>
+              <PriceItemCard text='Impostos' value={data?.total_tax} />
+              <PriceItemCard text='Total' value={data?.value_total} highlight />
             </div>
           )}
           <PriceItemDefault
