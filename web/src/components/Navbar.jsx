@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import { ExitIcon } from '@radix-ui/react-icons'
+import {ExitIcon, HomeIcon, KeyboardIcon} from '@radix-ui/react-icons'
 import { Logo } from '../components/Logo'
 import { DropdownMenu } from './Dropdown/Index'
 import { useAuth } from '../hooks/useAuth'
-import {useEffect, useState} from "react";
+import {useEffect, useState, useMemo} from "react";
 import {cn} from "../utils/classname.js";
 
 const CustomNavbar = () => {
@@ -18,11 +18,15 @@ const CustomNavbar = () => {
     { to: '/unities', title: 'Medidas', type: 'secondary' },
     { to: '/product-groups', title: 'Grupos de Produtos', type: 'secondary' },
     { to: '/products', title: 'Produtos', type: 'secondary' },
+    { type: 'separator' },
     { to: '/buyers', title: 'Compradores', type: 'secondary' },
     { to: '/suppliers', title: 'Fornecedores', type: 'secondary' }
   ]
 
   const { logout, user } = useAuth()
+
+  const isAdmin = useMemo(() => user && (user?.is_manager || user?.is_superuser), [user]);
+  const isBuyer = useMemo(() => user && (user?.is_buyer || isAdmin), [user])
 
   useEffect(() => {
     if (user?.username) {
@@ -48,45 +52,54 @@ const CustomNavbar = () => {
       <Logo className='h-full p-2' />
       <ul>
         <li>
-          <Link to='/'>Dashboard</Link>
+          <Link to='/' className="flex gap-2"><KeyboardIcon className="h-6 w-6"/></Link>
         </li>
-        <li>
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger>
-              <span>Administração</span>
-            </DropdownMenu.Trigger>
+        {isAdmin && (
+          <li>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <span>Administração</span>
+              </DropdownMenu.Trigger>
 
-            <DropdownMenu.Content>
-              {adminLinks.map((link, index) => (
-                <DropdownMenu.Item key={index}>
-                  <Link to={link.to}>{link.title}</Link>
-                </DropdownMenu.Item>
-              ))}
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </li>
+              <DropdownMenu.Content>
+                {adminLinks.map((link, index) => {
+                  if (link && link?.type === "separator") {
+                    return <DropdownMenu.Separator key={index}/>
+                  }
+                  return (
+                    <DropdownMenu.Item key={index}>
+                      <Link to={link.to}>{link.title}</Link>
+                    </DropdownMenu.Item>
+                  )
+                })}
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          </li>
+        )}
+        {isBuyer && (
+          <li>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <span>Cadastros</span>
+              </DropdownMenu.Trigger>
 
-        <li>
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger>
-              <span>Cadastros</span>
-            </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                {registerLinks.map((link, index) => (
+                  <DropdownMenu.Item key={index}>
+                    <Link to={link.to}>{link.title}</Link>
+                  </DropdownMenu.Item>
+                ))}
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          </li>
+        )}
 
-            <DropdownMenu.Content>
-              {registerLinks.map((link, index) => (
-                <DropdownMenu.Item key={index}>
-                  <Link to={link.to}>{link.title}</Link>
-                </DropdownMenu.Item>
-              ))}
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </li>
         <li>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <span
                 className={cn(
-                  'flex items-center justify-center gap-1 rounded-full h-10 w-10 border border-dashed border-purple-300 text-purple-500'
+                  'flex items-center justify-center gap-1 rounded-full h-10 w-10 border border-dashed border-gray-600'
                 )}>
                 {avatarLabel}
               </span>

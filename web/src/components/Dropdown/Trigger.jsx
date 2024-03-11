@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const Trigger = ({ children }) => {
   return (
-    <RadixDropdownMenu.Trigger className='outline-none'>
+    <RadixDropdownMenu.Trigger className='outline-none' asChild>
       {children}
     </RadixDropdownMenu.Trigger>
   )

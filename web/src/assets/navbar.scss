@@ -9,13 +9,18 @@ nav {
       @apply flex w-full h-full;
 
       button,
-      a {
+      a,
+      span {
         @apply uppercase h-10 flex justify-center items-center;
         @apply px-4 py-2;
         @apply font-normal tracking-tight;
         @apply hover:bg-black/5 transition-colors;
-        @apply transform-gpu hover:scale-110;
+        @apply transform-gpu hover:text-purple-400;
         @apply transition-all;
+        @apply cursor-pointer;
+        svg {
+          @apply hover:text-purple-400;
+        }
       }
     }
   }

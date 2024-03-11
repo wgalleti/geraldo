@@ -5,7 +5,7 @@ const Content = ({ children, className }) => {
   return (
     <RadixDropdownMenu.Portal>
       <RadixDropdownMenu.Content
-        className={`bg-white/80 p-4 rounded-md space-y-1 shadown ${className}`}
+        className={`bg-white/80 p-4 rounded-md space-y-1 shadown ${className} flex flex-col`}
       >
         {children}
       </RadixDropdownMenu.Content>
