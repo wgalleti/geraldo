@@ -3,8 +3,18 @@ import { DataGrid } from 'devextreme-react'
 import { merge } from 'lodash'
 import PropTypes from 'prop-types'
 
-const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
+const Grid = ({
+  dataSource = null,
+  gridCustom = {},
+  title = '',
+  forceRefresh
+}) => {
   const grid = useRef()
+
+  if (forceRefresh) {
+    grid.current?.instance?.refresh()
+  }
+
   const gridConfig = useMemo(() => {
     const itemsToolbar = gridCustom?.toolbar?.items || []
 
@@ -25,7 +35,7 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
       }
     ]
 
-    let base = {
+    const base = {
       searchPanel: {
         visible: true,
         searchVisibleColumnsOnly: true,
@@ -62,7 +72,7 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
           height: 'auto',
           width: '80%',
           showTitle: title,
-          title: title,
+          title,
           shadingColor: 'rgba(0,0,0, 0.7)'
         },
         form: {
@@ -111,10 +121,15 @@ const Grid = ({ dataSource = null, gridCustom = {}, title = '' }) => {
   )
 }
 
+Grid.defaultProps = {
+  forceRefresh: false
+}
+
 Grid.propTypes = {
   dataSource: PropTypes.object.isRequired,
   gridCustom: PropTypes.object,
-  title: PropTypes.string
+  title: PropTypes.string,
+  forceRefresh: PropTypes.bool
 }
 
 export default Grid

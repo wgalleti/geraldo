@@ -6,6 +6,10 @@ export default class Price extends Model {
     super('prices/prices/')
   }
 
+  async applyDiscount(id, values) {
+    await this.http.post(`/prices/prices/${id}/discount/`, values)
+  }
+
   lookup() {
     return {
       store: new CustomStore({

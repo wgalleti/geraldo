@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { columnsConfig, formConfig } from './config.js'
 import PriceItem from '../../api/price.item.js'
 import PropTypes from 'prop-types'
+import { useDiscount } from '../../hooks/useDiscount.js'
 
 const priceItemModel = new PriceItem()
 
@@ -11,6 +12,7 @@ const PriceItemDefault = ({ priceID, loadData, fastFill, readOnly }) => {
     () => priceItemModel.makeCustomStore({ price: priceID }),
     [priceID]
   )
+  const { isVisible } = useDiscount()
 
   const gridOptions = useMemo(() => {
     return {
@@ -32,7 +34,13 @@ const PriceItemDefault = ({ priceID, loadData, fastFill, readOnly }) => {
     }
   }, [loadData, fastFill])
 
-  return <Grid dataSource={dataSource} gridCustom={gridOptions} />
+  return (
+    <Grid
+      dataSource={dataSource}
+      gridCustom={gridOptions}
+      forceRefresh={!isVisible}
+    />
+  )
 }
 
 PriceItemDefault.propTypes = {

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -45,6 +46,18 @@ class Price(
         null=True,
         verbose_name=_("Supplier email denormalized"),
     )
+    discount = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Discount applied on all items"),
+    )
+    discount_percent = models.DecimalField(
+        max_digits=2,
+        decimal_places=2,
+        default=0,
+        verbose_name=_("Discount percent applied on all items"),
+    )
 
     @property
     def duration_time(self):
@@ -76,6 +89,10 @@ class Price(
     @property
     def value_total(self):
         return sum(item.value_total for item in self.price_items.all())
+
+    @property
+    def subtotal(self):
+        return sum(item.quantity * item.unitary for item in self.price_items.all())
 
     def __str__(self):
         return f"{self.pk}-{self.erp_code}"
@@ -145,6 +162,14 @@ class PriceItem(
         null=True,
         blank=True,
         verbose_name=_("Discount"),
+    )
+    discount_percent = models.DecimalField(
+        max_digits=2,
+        decimal_places=2,
+        default=0,
+        null=True,
+        blank=True,
+        verbose_name=_("Discount percent"),
     )
     rounding = models.DecimalField(
         max_digits=15,

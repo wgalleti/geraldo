@@ -9,6 +9,8 @@ import { form, formConfig } from './form'
 import { PriceItemDefault } from '../../components/PriceItem/Index.jsx'
 import { PriceItemCard } from '../../components/PriceItem/Card.jsx'
 import toast from 'react-hot-toast'
+import { PriceDiscount } from './Discount/Index.jsx'
+import { useDiscount } from '../../hooks/useDiscount.js'
 
 const priceModel = new Price()
 
@@ -17,9 +19,9 @@ export const PricePage = () => {
   const [allowEditing, setAllowEditing] = useState(true)
   const [data, setData] = useState(null)
 
-  let { priceID } = useParams()
-
+  const { priceID } = useParams()
   const navigate = useNavigate()
+  const { open, isVisible, setTotalValue, actualDiscount } = useDiscount()
 
   const changeFastFill = useCallback(
     () => setFastFill((state) => !state),
@@ -46,6 +48,10 @@ export const PricePage = () => {
       await priceModel.cancel(priceID)
       loadData()
     }
+  }, [])
+
+  const onDiscount = useCallback(async () => {
+    open()
   }, [])
 
   const toolbarItems = useMemo(() => {
@@ -112,15 +118,19 @@ export const PricePage = () => {
       form.option('formData', formData)
       const allow = ['filling_in', 'waiting']
       setAllowEditing(allow.includes(data.status))
+      setTotalValue(data.value_total)
+      actualDiscount(data?.total_discount || 0)
     } catch (error) {
       toast.error('Cotação não localizada.')
       navigate('/')
     }
-  }, [setAllowEditing, setData])
+  }, [setAllowEditing, setData, setTotalValue])
 
   useEffect(() => {
-    loadData()
-  }, [loadData])
+    if (!isVisible) {
+      loadData()
+    }
+  }, [loadData, isVisible])
 
   return (
     <div className='flex flex-col h-full'>
@@ -134,9 +144,14 @@ export const PricePage = () => {
           <Form {...formConfig} className='mb-1' />
         </div>
         <div className='w-full'>
+          <PriceDiscount priceId={data?.id} />
           {data && (
             <div className='flex flex-wrap gap-4 justify-between my-2'>
-              <PriceItemCard text='Descontos' value={data?.total_discount} />
+              <PriceItemCard
+                text='Descontos'
+                value={data?.total_discount}
+                onClick={() => allowEditing && onDiscount()}
+              />
               <PriceItemCard
                 text='Pendentes'
                 value={data?.items_pending}

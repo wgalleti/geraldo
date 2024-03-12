@@ -1,4 +1,5 @@
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
@@ -9,7 +10,7 @@ from price.models import (
     Price,
     PriceItem,
 )
-from price.services import PriceItemService
+from price.services import PriceService
 
 
 class BasePriceViewSetV1(BaseViewSetV1):
@@ -55,15 +56,29 @@ class PriceViewSetV1(BasePriceViewSetV1):
 
     @action(detail=True, methods=["post"])
     def cancel(self, request, pk=None):
-        service = PriceItemService(pk=pk)
+        service = PriceService(pk=pk)
         service.cancel()
         return Response({"message": _("Canceled")})
 
     @action(detail=True, methods=["post"])
     def finish(self, request, pk=None):
-        service = PriceItemService(pk=pk)
+        service = PriceService(pk=pk)
         service.finish()
         return Response({"message": _("Finished")})
+
+    @action(detail=True, methods=["post"])
+    def discount(self, request, pk=None):
+        with transaction.atomic():
+            value = str(request.data.get("value", 0))
+            percent = str(request.data.get("percent", 0))
+            instance = self.get_object()
+            instance.discount = value
+            instance.percent = percent
+            instance.save()
+
+            service = PriceService(pk=pk)
+            service.apply_discount()
+            return Response({"message": _("Applied")})
 
 
 class PriceItemViewSetV1(BasePriceViewSetV1):

@@ -6,6 +6,7 @@ import { loadMessages, locale } from 'devextreme/localization'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/Auth.jsx'
 import { Router } from './router/Index.jsx'
+import { DiscountProvider } from './context/Discount.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,9 +24,11 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <AuthProvider>
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
+        <DiscountProvider>
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
+        </DiscountProvider>
       </AuthProvider>
     </QueryClientProvider>
   )
