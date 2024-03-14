@@ -3,25 +3,21 @@ import Toolbar from 'devextreme-react/toolbar'
 import { confirm } from 'devextreme/ui/dialog'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import Price from '../../api/price.js'
-import http from '../../plugins/http'
 import { form, formConfig } from './form'
 import { PriceItemDefault } from '../../components/PriceItem/Index.jsx'
 import { PriceItemCard } from '../../components/PriceItem/Card.jsx'
 import toast from 'react-hot-toast'
 import { PriceDiscount } from './Discount/Index.jsx'
 import { useDiscount } from '../../hooks/useDiscount.js'
-
-const priceModel = new Price()
+import { usePrice } from '../../hooks/usePrice'
 
 export const PricePage = () => {
   const [fastFill, setFastFill] = useState(true)
-  const [allowEditing, setAllowEditing] = useState(true)
-  const [data, setData] = useState(null)
 
   const { priceID } = useParams()
   const navigate = useNavigate()
-  const { open, isVisible, setTotalValue, actualDiscount } = useDiscount()
+  const { priceModel, loadPrice, priceData, allowEditing } = usePrice()
+  const { openDiscountForm, discountFormVisible } = useDiscount()
 
   const changeFastFill = useCallback(
     () => setFastFill((state) => !state),
@@ -51,7 +47,7 @@ export const PricePage = () => {
   }, [])
 
   const onDiscount = useCallback(async () => {
-    open()
+    openDiscountForm()
   }, [])
 
   const toolbarItems = useMemo(() => {
@@ -98,39 +94,17 @@ export const PricePage = () => {
 
   const loadData = useCallback(async () => {
     try {
-      const { data } = await http.get(`prices/prices/${priceID}/`)
-      setData(data)
-      const formData = {
-        completed_percent: data.completed_percent,
-        payment_refer_name: data.payment_refer_data.name,
-        company_name: data.company_data.name,
-        buyer_name: data.buyer_data.name,
-        payment_name: data.payment_data.name,
-        status_data: data.status_data,
-        priority_data: data.priority_data,
-        duration_time: data.duration_time,
-        started_at: data.started_at,
-        expire_at: data.expire_at,
-        items_count: data.items_count,
-        value_total: data.value_total,
-        recommendation: data.recommendation
-      }
-      form.option('formData', formData)
-      const allow = ['filling_in', 'waiting']
-      setAllowEditing(allow.includes(data.status))
-      setTotalValue(data.value_total)
-      actualDiscount(data?.total_discount || 0)
+      await loadPrice(priceID)
+      form.option('formData', priceData)
     } catch (error) {
       toast.error('Cotação não localizada.')
       navigate('/')
     }
-  }, [setAllowEditing, setData, setTotalValue])
+  }, [form])
 
   useEffect(() => {
-    if (!isVisible) {
-      loadData()
-    }
-  }, [loadData, isVisible])
+    loadData()
+  }, [])
 
   return (
     <div className='flex flex-col h-full'>
@@ -144,21 +118,25 @@ export const PricePage = () => {
           <Form {...formConfig} className='mb-1' />
         </div>
         <div className='w-full'>
-          <PriceDiscount priceId={data?.id} />
-          {data && (
+          <PriceDiscount priceId={priceID} />
+          {priceData && (
             <div className='flex flex-wrap gap-4 justify-between my-2'>
               <PriceItemCard
                 text='Descontos'
-                value={data?.total_discount}
-                onClick={() => allowEditing && onDiscount()}
+                value={priceData?.discount}
+                onClick={() => onDiscount()}
               />
               <PriceItemCard
                 text='Pendentes'
-                value={data?.items_pending}
+                value={priceData?.items_pending}
                 noDigits
               />
-              <PriceItemCard text='Impostos' value={data?.total_tax} />
-              <PriceItemCard text='Total' value={data?.value_total} highlight />
+              <PriceItemCard text='Impostos' value={priceData?.total_tax} />
+              <PriceItemCard
+                text='Total'
+                value={priceData?.value_total}
+                highlight
+              />
             </div>
           )}
           <PriceItemDefault

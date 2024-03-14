@@ -1,37 +1,50 @@
 import { createContext, useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
+import toast from 'react-hot-toast'
+import { PriceProvider } from './Price'
+import Price from '../api/price'
 
-const DiscountContext = createContext()
+const DiscountContext = createContext(null)
 
 const DiscountProvider = ({ children }) => {
-  const [isVisible, setIsVisible] = useState(false)
-  const [totalValue, setTotalValue] = useState(0)
-  const [discount, setDiscount] = useState(0)
-  const open = useCallback(() => setIsVisible(true), [setIsVisible])
-  const close = useCallback(() => setIsVisible(false), [setIsVisible])
-  const toggle = useCallback(
-    () => setIsVisible((state) => !state),
-    [setIsVisible]
-  )
-  const actualDiscount = useCallback(
-    (value) => setDiscount(value),
-    [setDiscount]
-  )
+  const [discountFormVisible, setDiscountFormVisible] = useState(false)
+  const [discountData, setDiscountData] = useState({
+    discount: 0,
+    percent: 0,
+    totalValue: 0
+  })
+  const [priceModel] = useState(() => new Price())
+
+  const openDiscountForm = useCallback(() => setDiscountFormVisible(true), [])
+  const closeDiscountForm = useCallback(() => setDiscountFormVisible(false), [])
+  const mutateDiscountData = useCallback((data) => {
+    console.log('mutate', data)
+    setDiscountData(data)
+  }, [])
+
+  const saveDiscout = useCallback(async (priceID, payload) => {
+    try {
+      await priceModel.applyDiscount(priceID, payload)
+      toast.success('Desconto aplicado com sucesso.')
+      closeDiscountForm()
+    } catch (error) {
+      toast.error('Falha ao aplicar o desconto.')
+      console.error(error)
+    }
+  }, [])
 
   return (
     <DiscountContext.Provider
       value={{
-        isVisible,
-        open,
-        close,
-        toggle,
-        totalValue,
-        discount,
-        setTotalValue,
-        actualDiscount
+        discountFormVisible,
+        openDiscountForm,
+        closeDiscountForm,
+        mutateDiscountData,
+        discountData,
+        saveDiscout
       }}
     >
-      {children}
+      <PriceProvider>{children}</PriceProvider>
     </DiscountContext.Provider>
   )
 }
