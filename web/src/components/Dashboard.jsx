@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   const goToPrice = useCallback(() => {
     const data = grid.getSelectedRowsData()
-    if (data.length == 0) return
+    if (data.length === 0) return
     const { id } = data[0]
     navigate(`/prices/${id}`)
   }, [])
@@ -39,10 +39,7 @@ export default function Dashboard() {
           location: 'before',
           options: {
             icon: 'print',
-            text: 'Detalhes',
-            onClick: () => {
-              console.log('details')
-            }
+            text: 'Detalhes'
           }
         }
       ]

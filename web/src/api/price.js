@@ -7,7 +7,7 @@ export default class Price extends Model {
   }
 
   async applyDiscount(id, values) {
-    await this.http.post(`/prices/prices/${id}/discount/`, values)
+    await this.http.patch(`/prices/prices/${id}/`, values)
   }
 
   lookup() {

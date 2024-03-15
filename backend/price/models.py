@@ -53,7 +53,7 @@ class Price(
         verbose_name=_("Discount applied on all items"),
     )
     discount_percent = models.DecimalField(
-        max_digits=2,
+        max_digits=4,
         decimal_places=2,
         default=0,
         verbose_name=_("Discount percent applied on all items"),
@@ -93,6 +93,10 @@ class Price(
     @property
     def subtotal(self):
         return sum(item.quantity * item.unitary for item in self.price_items.all())
+
+    @property
+    def has_discount(self):
+        return self.discount > 0 or self.discount_percent > 0
 
     def __str__(self):
         return f"{self.pk}-{self.erp_code}"
@@ -164,7 +168,7 @@ class PriceItem(
         verbose_name=_("Discount"),
     )
     discount_percent = models.DecimalField(
-        max_digits=2,
+        max_digits=4,
         decimal_places=2,
         default=0,
         null=True,

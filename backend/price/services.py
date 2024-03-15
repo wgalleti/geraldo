@@ -13,12 +13,16 @@ class PriceService:
     def _has_data(self):
         if self.data.pk is None:
             raise Exception(_("Price not persisted"))
+        self.data.refresh_from_db()
 
     def _get_queryset_items(self):
         return self.data.price_items
 
     def apply_clean_discount(self):
         self._has_data()
+
+        if not self.data.has_discount:
+            return
 
         self.data.discount = 0
         self.data.discount_percent = 0
@@ -28,44 +32,23 @@ class PriceService:
 
     def apply_discount(self):
         self._has_data()
-        if self.data.discount_percent > 0:
-            return self._apply_discount_percentage()
 
         return self._apply_discount_value()
 
-    def _apply_discount_percentage(self):
+    def apply_discount_from_items(self):
         self._has_data()
-
-        percentage = self.data.discount_percent
-        if percentage == 0:
-            return
-
-        # Parameters
-        qs_items = self._get_queryset_items()
-        count = qs_items.count()
-        base_price = self.data.subtotal
-
-        position = 0
-        total_discount = 0
-
-        for item in qs_items.all():
-            position += 1
-            proportional_value = item.subtotal * (percentage / 100)
-            value = (
-                proportional_value if position != count else base_price - total_discount
-            )
-            item.discount = value
-            item.discount_percent = percentage
-            item.save()
-
-            total_discount += proportional_value
+        self.data.discount = round(self.data.total_discount, 2)
+        self.data.discount_percent = round(
+            self.data.total_discount / self.data.value_total * 100, 2
+        )
+        self.data.save()
 
     def _apply_discount_value(self):
         self._has_data()
 
         discount = self.data.discount
         if discount == 0:
-            return
+            self.apply_clean_discount()
 
         qs_items = self._get_queryset_items()
         count = qs_items.count()
@@ -82,10 +65,14 @@ class PriceService:
             value = (
                 proportional_value if position != count else discount - total_discount
             )
-            item.discount = value
+            item.discount = round(value, 2)
+            item.discount_percent = round(value / item.subtotal * 100, 2)
             item.save()
 
-            total_discount += proportional_value
+            total_discount += value
+
+        self.data.discount_percent = round(total_discount / base_price * 100, 2)
+        self.data.save()
 
     def cancel(self):
         self._has_data()
