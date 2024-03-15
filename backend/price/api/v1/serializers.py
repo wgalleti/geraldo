@@ -50,9 +50,6 @@ class PriceItemSerializerV1(serializers.ModelSerializer):
         quantity_refer = self.instance.quantity_refer
         quantity = attrs.get("quantity", 0)
 
-        if quantity == 0:
-            raise ValidationError(_("Quantity cannot be 0"))
-
         if quantity > quantity_refer:
             raise ValidationError(_("Quantity cannot be greater than quantity_refer"))
 

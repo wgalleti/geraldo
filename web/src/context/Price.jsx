@@ -47,7 +47,6 @@ const PriceProvider = ({ children }) => {
 
   const {
     isError,
-    isSuccess,
     data,
     refetch: reload
   } = useQuery({
@@ -57,7 +56,7 @@ const PriceProvider = ({ children }) => {
   })
 
   useEffect(() => {
-    if (isSuccess) {
+    if (data) {
       const allow = ['filling_in', 'waiting']
       const totalWithOutDiscount = data.value_total + data.discount
 
@@ -73,7 +72,7 @@ const PriceProvider = ({ children }) => {
         totalValue: totalWithOutDiscount
       })
     }
-  }, [isSuccess, data])
+  }, [data])
 
   useEffect(() => {
     if (isError) {

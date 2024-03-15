@@ -88,3 +88,11 @@ class PriceItemViewSetV1(BasePriceViewSetV1):
         "id",
         "price",
     )
+
+    def update(self, request, *args, **kwargs):
+        updated = super().update(request, *args, **kwargs)
+        instance = self.get_object()
+        ps = PriceService(pk=instance.price_id)
+        ps.apply_discount_from_items()
+
+        return updated

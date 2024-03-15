@@ -35,12 +35,20 @@ class PriceService:
 
         return self._apply_discount_value()
 
+    def apply_discount_from_items(self):
+        self._has_data()
+        self.data.discount = round(self.data.total_discount, 2)
+        self.data.discount_percent = round(
+            self.data.total_discount / self.data.value_total * 100, 2
+        )
+        self.data.save()
+
     def _apply_discount_value(self):
         self._has_data()
 
         discount = self.data.discount
         if discount == 0:
-            return
+            self.apply_clean_discount()
 
         qs_items = self._get_queryset_items()
         count = qs_items.count()

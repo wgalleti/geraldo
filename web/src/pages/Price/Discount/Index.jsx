@@ -5,6 +5,7 @@ import { useDiscount } from '../../../hooks/useDiscount'
 
 const PriceDiscount = ({ priceId, loadData }) => {
   const formRef = useRef(null)
+  const updatingRef = useRef(false)
 
   const { discountFormVisible, discountData, saveDiscout, closeDiscountForm } =
     useDiscount()
@@ -31,14 +32,7 @@ const PriceDiscount = ({ priceId, loadData }) => {
               type: 'fixedPoint',
               precision: 2
             },
-            step: 5,
-            onValueChanged: ({ value }) => {
-              const form = formRef.current?.instance
-              const { totalValue } = discountData
-              const calcValue = (totalValue * value) / 100
-              console.log(calcValue, discountData, (totalValue * value) / 100)
-              form.updateData('discount', calcValue)
-            }
+            step: 5
           },
           validationRules: [
             { type: 'range', max: 100, message: 'Limite de 100%' }
@@ -67,15 +61,31 @@ const PriceDiscount = ({ priceId, loadData }) => {
             text: 'Aplicar'
           }
         }
-      ]
+      ],
+      onFieldDataChanged: ({ dataField, value }) => {
+        if (updatingRef.current) return
+
+        const { totalValue } = discountData
+        const form = formRef.current?.instance
+        updatingRef.current = true
+
+        if (dataField === 'discount_percent') {
+          const discount = totalValue * (value / 100)
+          form.updateData('discount', discount)
+        }
+        if (dataField === 'discount') {
+          const percent = (value / totalValue) * 100
+          form.updateData('discount_percent', percent)
+        }
+        setTimeout(() => (updatingRef.current = false), 0)
+      }
     }),
-    []
+    [discountData]
   )
 
   useEffect(() => {
     if (discountFormVisible) {
-      console.log(discountData)
-      formRef.current.instance.option('formData', {
+      formRef.current.instance.updateData({
         discount: discountData.discount,
         discount_percent: discountData.percent
       })
@@ -87,7 +97,10 @@ const PriceDiscount = ({ priceId, loadData }) => {
       e.preventDefault()
       const form = formRef.current?.instance
       const { discount, discount_percent } = form.option('formData')
-      await saveDiscout(priceId, { discount, discount_percent })
+      await saveDiscout(priceId, {
+        discount: Math.round(discount, 2),
+        discount_percent: Math.round(discount_percent, 2)
+      })
       form.reset()
       loadData()
     },
