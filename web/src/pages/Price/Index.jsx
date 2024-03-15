@@ -6,7 +6,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { form, formConfig } from './form'
 import { PriceItemDefault } from '../../components/PriceItem/Index.jsx'
 import { PriceItemCard } from '../../components/PriceItem/Card.jsx'
-import toast from 'react-hot-toast'
 import { PriceDiscount } from './Discount/Index.jsx'
 import { useDiscount } from '../../hooks/useDiscount.js'
 import { usePrice } from '../../hooks/usePrice'
@@ -14,10 +13,21 @@ import { usePrice } from '../../hooks/usePrice'
 export const PricePage = () => {
   const [fastFill, setFastFill] = useState(true)
 
-  const { priceID } = useParams()
   const navigate = useNavigate()
-  const { priceModel, loadPrice, priceData, allowEditing } = usePrice()
-  const { openDiscountForm, discountFormVisible } = useDiscount()
+  const { priceID } = useParams()
+  const { priceModel, priceData, allowEditing, setPriceID, reload, isError } =
+    usePrice()
+  const { openDiscountForm } = useDiscount()
+
+  useEffect(() => {
+    setPriceID(priceID)
+  }, [priceID])
+
+  useEffect(() => {
+    if (isError) {
+      navigate('/')
+    }
+  }, [isError])
 
   const changeFastFill = useCallback(
     () => setFastFill((state) => !state),
@@ -31,7 +41,7 @@ export const PricePage = () => {
     )
     if (result) {
       await priceModel.finish(priceID)
-      loadData()
+      reload()
     }
   }, [])
 
@@ -42,7 +52,7 @@ export const PricePage = () => {
     )
     if (result) {
       await priceModel.cancel(priceID)
-      loadData()
+      reload()
     }
   }, [])
 
@@ -92,19 +102,9 @@ export const PricePage = () => {
     ]
   }, [setFastFill, fastFill, allowEditing])
 
-  const loadData = useCallback(async () => {
-    try {
-      await loadPrice(priceID)
-      form.option('formData', priceData)
-    } catch (error) {
-      toast.error('Cotação não localizada.')
-      navigate('/')
-    }
-  }, [form])
-
   useEffect(() => {
-    loadData()
-  }, [])
+    form.option('formData', priceData)
+  }, [priceData])
 
   return (
     <div className='flex flex-col h-full'>
@@ -118,7 +118,7 @@ export const PricePage = () => {
           <Form {...formConfig} className='mb-1' />
         </div>
         <div className='w-full'>
-          <PriceDiscount priceId={priceID} />
+          <PriceDiscount priceId={priceID} loadData={reload} />
           {priceData && (
             <div className='flex flex-wrap gap-4 justify-between my-2'>
               <PriceItemCard
@@ -141,7 +141,7 @@ export const PricePage = () => {
           )}
           <PriceItemDefault
             priceID={priceID}
-            loadData={loadData}
+            loadData={reload}
             fastFill={fastFill}
             readOnly={!allowEditing}
           />

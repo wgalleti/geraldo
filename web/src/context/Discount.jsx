@@ -18,7 +18,6 @@ const DiscountProvider = ({ children }) => {
   const openDiscountForm = useCallback(() => setDiscountFormVisible(true), [])
   const closeDiscountForm = useCallback(() => setDiscountFormVisible(false), [])
   const mutateDiscountData = useCallback((data) => {
-    console.log('mutate', data)
     setDiscountData(data)
   }, [])
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useDiscount } from '../../../hooks/useDiscount'
 
-const PriceDiscount = ({ priceId }) => {
+const PriceDiscount = ({ priceId, loadData }) => {
   const formRef = useRef(null)
 
   const { discountFormVisible, discountData, saveDiscout, closeDiscountForm } =
@@ -89,6 +89,7 @@ const PriceDiscount = ({ priceId }) => {
       const { discount, discount_percent } = form.option('formData')
       await saveDiscout(priceId, { discount, discount_percent })
       form.reset()
+      loadData()
     },
     [formRef]
   )
@@ -112,8 +113,8 @@ const PriceDiscount = ({ priceId }) => {
 }
 
 PriceDiscount.propTypes = {
-  limit: PropTypes.number,
-  priceId: PropTypes.string
+  priceId: PropTypes.string,
+  loadData: PropTypes.func
 }
 
 export { PriceDiscount }
